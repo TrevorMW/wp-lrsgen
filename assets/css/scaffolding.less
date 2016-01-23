@@ -1,0 +1,397 @@
+@import 'variables';
+@import 'utilities';
+
+*{
+  font-family:@baseFont;
+  font-weight:600;
+  font-size:16px;
+  letter-spacing:1px;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body{
+  margin:0;
+  padding:0;
+  color:#666;
+  line-height:20px;
+  font-size:16px;
+  overflow:hidden;
+}
+
+.wrap,
+.wrapper,
+.container{
+  display: block;
+  width:100%;
+  clear:both;
+}
+
+.wrapper{
+
+  &.white{
+    background-color:white;
+  }
+
+  &.login{
+    height:100vh;
+  }
+
+  &.hotel-list,
+  &.add-hotel-form,
+  &.edit-hotel-form,
+  &.new-reservation,
+  &.reservation-sheet{
+    padding:25px;
+  }
+
+}
+
+.container{
+
+  .reservation-sheet &{
+    border:1px solid #ddd;
+    background-color:#fff;
+  }
+}
+
+.table{
+  display: table;
+  table-layout: fixed;
+  width:100%;
+
+  & .mini-toolbar{
+    border-top:1px dashed #ccc;
+  }
+}
+
+.table-cell{
+  display: table-cell;
+  width:100%;
+  vertical-align: top;
+
+  &.utility-bar{
+    width:125px;
+    background-color:#333;
+  }
+
+  & .logo{
+    padding:25px 0;
+    vertical-align: middle;
+    background-color:@crimson;
+    text-align: center;
+  }
+
+  .mini-toolbar &{
+    text-align: center;
+    border-left:1px dashed #ccc;
+
+    &:first-child{
+      border-left:0;
+    }
+  }
+
+  &.page-tools{
+    text-align: right;
+  }
+
+  .panel-header &{
+    padding:0 20px;
+    width:100%;
+    vertical-align: middle;
+  }
+
+  &.panel-button{
+    width:70px;
+    padding:0;
+    text-align: right;
+  }
+
+  .hotel-directions .container > &,
+  .reservation-sheet footer &{
+    padding:20px;
+  }
+}
+
+.col{
+  float:left;
+  margin-right:2.001%;
+
+  &.right{
+    margin-right:0;
+    float:right;
+  }
+}
+
+main{
+  background-color:#f9f9f9;
+}
+
+.main-content-window{
+  position: relative;
+}
+
+.main-content-scroll-inner{
+  height:100%;
+  overflow-y:scroll;
+}
+
+.main-content-area{
+  position: relative;
+  height:100vh;
+  max-height:100vh;
+  overflow:scroll;
+  padding-bottom:100px;
+}
+
+.window-utility-box{
+  border-bottom:1px solid #ddd;
+}
+
+header{
+
+  &.main-content{
+    height:5vh;
+  }
+
+  &.window-header{
+    display: inline-block;
+    width:auto;
+    padding:18px 25px;
+  }
+
+  &.hotel-header{
+    padding:10px;
+    background-color:@paleRed;
+    color:#fff;
+  }
+
+  .reservation-sheet &{
+    background-color:#ededed;
+    padding:25px 0;
+    border-bottom:1px solid #ddd;
+  }
+}
+
+footer{
+
+  .reservation-sheet &{
+    background-color:#ededed;
+    border-top:1px solid #ddd;
+  }
+}
+
+section{
+
+  .reservation-sheet &{
+    background-color:#fff;
+    padding:40px 20px;
+  }
+}
+
+ul,ol{
+  margin:0;
+  padding:0;
+
+  &.hotel-list{
+    list-style: none;
+
+    &:after{
+      .clearfix();
+    }
+  }
+}
+
+li{
+
+  &.hotel{
+    float:left;
+    width:23.7%;
+    margin: 0 1.5% 1.5% 0;
+
+    &:last-child{
+      margin-right:0;
+    }
+
+    &:nth-child(4n){
+      margin-right:0;
+    }
+  }
+}
+
+a{
+  .transition(all .3s);
+  cursor:pointer;
+
+  .page-tools &{
+    display: inline-block;
+  }
+
+  .hotel-img &{
+    display: block;
+    max-height:225px;
+    min-height:225px;
+    overflow:hidden;
+  }
+
+  .mini-toolbar &,
+  .mini-toolbar & button{
+    color:#444;
+    display: block;
+    padding:15px 0 ;
+
+    &:hover{
+      background-color:#efefef;
+    }
+  }
+
+  .panel-button &{
+    display: inline-block;
+    padding:20px;
+    border-left:1px solid #ddd;
+    font-size:20px;
+    color:@crimson;
+
+    &:hover{
+      background-color:#f4f4f4;
+    }
+  }
+}
+
+span{
+  display: inline;
+}
+
+button{
+
+  .mini-toolbar &{
+    color:#444;
+    display: block;
+    padding:15px 0 ;
+    width:100%;
+
+    &:hover{
+      background-color:#efefef;
+    }
+  }
+}
+
+i.fa{
+  color:inherit;
+
+  .mini-toolbar &{
+    font-size:21px;
+  }
+}
+
+.page-forms{
+  text-align: right;
+  padding: 20px 20px 0 20px;
+}
+
+.page-tools{
+  float:right;
+  height:100%;
+  padding:18px 0;
+  margin-right:15px;
+}
+
+[data-map-canvas]{
+  border:1px solid #ccc;
+}
+
+[data-overlay-parent]{
+  position: absolute;
+  left:0;
+  bottom:0;
+  top:0;
+  right:0;
+  z-index:9;
+  width:100%;
+  background-color:rgba(255,255,255,0.5);
+  display: none;
+  text-align: center;
+  height:100vh;
+
+  &.active{
+    display: table;
+  }
+}
+[data-overlay]{
+  display: table-cell;
+  vertical-align: middle;
+  width:100%;
+  height:100%;
+
+  & i{
+    font-size:50px;
+    color:#888;
+  }
+}
+
+.hotel-inner{
+  -webkit-box-shadow: 0px 13px 10px -8px rgba(0,0,0,0.18);
+  -moz-box-shadow: 0px 13px 10px -8px rgba(0,0,0,0.18);
+  box-shadow: 0px 13px 10px -8px rgba(0,0,0,0.18);
+  background-color:#ddd;
+}
+.hotel-details{
+  padding:15px;
+  min-height:100px;
+}
+
+.panel{
+  margin-bottom:35px;
+  border:1px solid #ccc;
+  .transition(all .3s);
+
+  & .panel-header,
+  & .panel-content,
+  & .panel-footer{
+    background-color:#fff;
+    padding:20px;
+  }
+
+  & .panel-header{
+    background:#fff url('../media/stripe.png') repeat left top;
+    color:@black;
+    border-bottom:1px solid #ccc;
+
+    &.table{
+      padding:0;
+    }
+  }
+
+  & .panel-content{
+    background-color:#f1f1f1;
+
+    &:after{
+      .clearfix();
+    }
+  }
+
+  & .panel-header legend{
+    display: inline;
+    width:auto;
+    margin:0;
+  }
+
+  &.focused-panel{
+    transform: translate( 0, -5px );
+  }
+}
+
+.box{
+  padding:15px;
+  border-radius:2px;
+  border:1px solid #ddd;
+
+  &.striped{
+    background:url('../media/stripe-grey.png') repeat left top;
+  }
+}
+
+.reservation-sheet{
+
+}

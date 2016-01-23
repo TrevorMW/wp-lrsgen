@@ -1,0 +1,15 @@
+/*
+Theme Name: Lowcountry Reservations Generator Application
+Theme URI: lrsgen-wp.trevor-wagner.com
+Author: BrowserFoundry
+Author URI: browserfoundry.com
+Version: 0.0.1
+*/
+
+*{
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	text-decoration:none !important;
+	outline:0 !important;
+}

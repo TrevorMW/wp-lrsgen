@@ -1,0 +1,71 @@
+@import 'variables';
+
+
+table{
+  display: table;
+  width:100%;
+  table-layout:fixed;
+  border-collapse:collapse;
+
+  & td,
+  & th{
+    text-align: left;
+    padding:8px;
+  }
+
+  & th{
+    background-color:#dcdcdc;
+  }
+
+  & td{
+
+    &:focus{
+      background-color:#fff;
+    }
+  }
+
+  & tbody{
+
+  }
+
+  &.hotel-rate-table{
+    border:1px solid #dcdcdc;
+    margin:0 15px;
+    width:98%;
+    margin: 0 0 0 auto;
+
+    & td,
+    & th{
+      border-left:1px solid #dcdcdc;
+
+      &:first-child,
+      &[data-hotel-row-action]{
+        border-left:0;
+      }
+    }
+
+
+    & th.hotel-phone,
+    & th.hotel-email,
+    & th.hotel-concierge,
+    & th.hotel-manager{
+      width:110px;
+    }
+
+    & th.hotel-name{
+      width:200px;
+    }
+
+    & th.hotel-rates{
+      width:400px;
+    }
+
+    & th.hotel-row-action{
+      width:35px;
+    }
+
+    & td.hotel-row-action{
+      text-align: center;
+    }
+  }
+}

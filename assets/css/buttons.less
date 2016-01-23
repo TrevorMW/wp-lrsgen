@@ -1,0 +1,37 @@
+@import 'variables';
+
+.btn{
+  .transition( all .3s);
+  border:0;
+  background-color:#ccc;
+  border-radius:0;
+  padding:6px 12px;
+  font-size:12px;
+  border-bottom:2px solid;
+
+  &.btn-primary{
+    background-color:@crimson;
+    color:#fff;
+    border-bottom-color:darken( @crimson, 10% );
+
+    &:hover{
+      background-color:darken( @crimson, 10% )
+    }
+  }
+
+  .inline &{
+    padding:16px;
+    display: inline-block;
+    vertical-align: middle;
+
+  }
+}
+
+button{
+  cursor:pointer;
+
+  .mini-toolbar  &{
+    background-color:transparent;
+    border:0;
+  }
+}
