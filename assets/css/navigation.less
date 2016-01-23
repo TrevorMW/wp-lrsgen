@@ -35,4 +35,43 @@ nav{
   &.main-nav{
 
   }
+
+  &[data-tab-triggers]{
+    display: block;
+    width:100%;
+
+    & ul{
+      display: table;
+      width:100%;
+      table-layout:fixed;
+      border:2px solid #ccc;
+    }
+
+    & li{
+      display: table-cell;
+      vertical-align: bottom;
+      text-align: center;
+      border-left:2px solid #ccc;
+
+      &:first-child{
+        border:0;
+      }
+    }
+
+    & a{
+      display: block;
+      width:100%;
+      padding: 15px 0;
+      font-size:18px;
+      color:@black;
+      background-color:#eee;
+      .transition( all .3s );
+
+      &:hover,
+      &.active{
+        color:@crimson;
+        background-color:#fff;
+      }
+    }
+  }
 }

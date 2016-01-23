@@ -23,7 +23,8 @@
   var ajax_url = '<?php echo admin_url('ajax'); ?>';
 </script>
 
-<div class="wrap body-wrap login">
+<div class="wrap login-wrap">
 
-  <main class="wrapper table login">
+  <div class="wrapper table login-page">
+    <div data-overlay-parent><div data-overlay><i class="fa fa-fw fa-spin fa-spinner"></i></div></div>
 

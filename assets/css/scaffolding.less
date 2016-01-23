@@ -34,8 +34,10 @@ body{
     background-color:white;
   }
 
-  &.login{
+  &.login-page{
     height:100vh;
+    background-color:#f1ecec;
+    color:#444;
   }
 
   &.hotel-list,
@@ -70,6 +72,12 @@ body{
   display: table-cell;
   width:100%;
   vertical-align: top;
+
+  .login-page &{
+    height:100%;
+    vertical-align: middle;
+    text-align: center;
+  }
 
   &.utility-bar{
     width:125px;
@@ -282,6 +290,39 @@ i.fa{
 
   .mini-toolbar &{
     font-size:21px;
+  }
+}
+
+.login-page-content{
+  width:400px;
+  margin:0 auto;
+}
+
+.login-forms{
+  margin: 40px 0;
+  text-align: left;
+}
+
+.login-logo{
+  color:@crimson;
+  font-size:60px;
+  font-weight:800;
+  line-height:60px;
+}
+
+[data-tabs]{
+  border:2px solid #ccc;
+  border-top:0;
+  padding:25px;
+  background-color:#fff;
+}
+
+[data-tab]{
+  overflow:hidden;
+  height:0;
+
+  &.active{
+    height:auto;
   }
 }
 

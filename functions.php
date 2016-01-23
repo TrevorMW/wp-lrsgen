@@ -15,7 +15,7 @@ require_once('lib/classes/class-form-helper.php');
 require_once('lib/classes/class-hotel.php');
 require_once('lib/classes/class-reservation.php');
 require_once('lib/classes/class-action_name.php');
-require_once('lib/classes/class-tool-button-generator.php');
+require_once('lib/classes/class-custom-login.php');
 
 function add_global_query_args()
 {
@@ -56,6 +56,16 @@ function instantiate_globals( $post )
     $GLOBALS['current_report'] = new Report( $report_id );
 }
 add_action( 'add_globals', 'instantiate_globals', 10, 1 );
+
+function check_if_user_exists()
+{
+  if( !is_user_logged_in() && !is_front_page() )
+  {
+    wp_redirect( '/login', 301 );
+    die();
+  }
+}
+add_action( 'template_redirect', 'check_if_user_exists' );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////// START CUSTOM FUNCTIONS ////////////////////////////////////////

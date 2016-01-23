@@ -1,5 +1,26 @@
 @import:'variables';
 
+a,
+p,
+small,
+strong,
+em,
+b,
+sup,
+mark,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+  line-height:inherit;
+  font-weight:inherit;
+  font-size:inherit;
+  color:inherit;
+
+}
+
 li{
 
 }
@@ -22,12 +43,21 @@ span{
 
 }
 
+small{
+
+  .login-logo &{
+    font-size:56px;
+    font-weight:600;
+    color:#444;
+  }
+}
+
 
 h1,h2,h3,h4,h5,h6{
   margin:0;
   padding:0;
-  line-height:normal;
-  font-weight:400;
+
+
 }
 
 h1{

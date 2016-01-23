@@ -254,6 +254,44 @@
     }
   }
 
+  $.fn.tabs = {
+    tabs:'',
+    triggers:'',
+    init:function( tabs, triggers )
+    {
+      this.tabs     = tabs;
+      this.triggers = triggers;
+
+      this.triggers.on( 'click', 'a', this, function( e )
+      {
+        e.data.show_tab( $(this) )
+      })
+    },
+    show_tab:function( el )
+    {
+      this.hide_all();
+
+      el.addClass('active');
+
+      var id = el.data('tab-trigger');
+
+      this.tabs.find('[data-tab="' + id + '"]').addClass('active');
+    },
+    hide_all:function()
+    {
+      this.triggers.find('[data-tab-trigger]').each(function()
+      {
+        $(this).removeClass('active');
+      })
+
+      this.tabs.find('[data-tab]').each(function()
+      {
+        $(this).removeClass('active');
+      })
+
+    }
+  }
+
   $(document).ready(function()
   {
     if( $('[data-validate-cc-card ]')[0] != undefined )
@@ -261,6 +299,10 @@
 
     if( $('[data-overlay]')[0] != undefined )
       $.fn.overlay.init( $('[data-overlay]'), $('[data-overlay]').parent() );
+
+    if( $('[data-tabs]')[0] != undefined && $('[data-tab-triggers]')[0] != undefined )
+      $.fn.tabs.init( $('[data-tabs]'), $('[data-tab-triggers]') );
+
 
     if( $('[data-fireable-input]')[0] != undefined )
     {

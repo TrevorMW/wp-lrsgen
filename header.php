@@ -1,8 +1,9 @@
-<?php session_start();
+<?php
 /**
  * @package WordPress
  * @subpackage themename
  */
+
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
