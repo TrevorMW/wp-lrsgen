@@ -7,3 +7,9 @@ This current implementation implements large amounts of AJAX, and integrates new
 
 This project makes use of extensive Object-oriented PHP principles, a ton of AJAX, and Object oriented CSS.
 It also strives to keep things cohesive, DRY-er than an oaky merlot, and simpler than Gene Simmons's band.
+
+“Tell me, and I will forget. 
+ Show me, and I may remember. 
+ Involve me, and I will understand." 
+
+- Confucius
