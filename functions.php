@@ -17,6 +17,10 @@ require_once('lib/classes/class-reservation.php');
 require_once('lib/classes/class-action_name.php');
 require_once('lib/classes/class-custom-login.php');
 
+/**
+ * @package WordPress
+ * @subpackage themename
+ */
 function add_global_query_args()
 {
   global $wp;
@@ -30,7 +34,11 @@ function add_global_query_args()
 }
 add_action( 'init', 'add_global_query_args' );
 
-// LOAD GLOBAL DATA FOR VARIOUS USAGE
+
+/**
+ * @package WordPress
+ * @subpackage themename
+ */
 function instantiate_globals( $post )
 {
   global $wp;
@@ -57,6 +65,11 @@ function instantiate_globals( $post )
 }
 add_action( 'add_globals', 'instantiate_globals', 10, 1 );
 
+
+/**
+ * @package WordPress
+ * @subpackage themename
+ */
 function check_if_user_exists()
 {
   if( !is_user_logged_in() && !is_front_page() )
@@ -68,6 +81,10 @@ function check_if_user_exists()
 add_action( 'template_redirect', 'check_if_user_exists' );
 
 
+/**
+ * @package WordPress
+ * @subpackage themename
+ */
 function go_home()
 {
   wp_redirect( home_url() );
@@ -75,77 +92,208 @@ function go_home()
 }
 add_action('wp_logout','go_home');
 
+
+/**
+ * @package WordPress
+ * @subpackage themename
+ */
+function create_register_codes_table()
+{
+  global $wpdb, $charset_collate, $db_version;
+
+  $table_name      = $wpdb->prefix. "register_codes";
+  $charset_collate = $wpdb->get_charset_collate();
+
+  if( $wpdb->get_var( "SHOW TABLES LIKE '" . $table_name . "'" ) !=  $table_name )
+  {
+    $create_sql = "CREATE TABLE " . $table_name . " (
+                    register_code_id INT(11) NOT NULL auto_increment,
+                    register_code VARCHAR(12) NOT NULL ,
+                    register_code_used BOOLEAN NOT NULL,
+                    PRIMARY KEY (register_code_id))$charset_collate;";
+  }
+
+  require_once( ABSPATH . "wp-admin/includes/upgrade.php" );
+  dbDelta( $create_sql );
+
+  if( !isset( $wpdb->register_codes ) )
+  {
+    $wpdb->register_codes = $table_name;
+    $wpdb->tables[]       = str_replace( $wpdb->prefix, '', $table_name );
+  }
+}
+add_action( 'init', 'create_register_codes_table' );
+
+
+/**
+ * @package WordPress
+ * @subpackage themename
+ */
+function example_add_dashboard_widgets() {
+
+	wp_add_dashboard_widget( 'register_codes', 'Generate User Register Codes',  'build_register_codes_widget' );
+}
+add_action( 'wp_dashboard_setup', 'example_add_dashboard_widgets' );
+
+
+/**
+ * @package WordPress
+ * @subpackage themename
+ */
+function build_register_codes_widget()
+{
+  global $wpdb;
+
+  $html = $code_data = '';
+
+  $codes = $wpdb->get_results( 'SELECT * FROM '.$wpdb->register_codes );
+
+  if( is_array( $codes ) )
+  {
+    foreach( $codes as $code )
+    {
+      if( $code->register_code_used == 0 )
+      {
+        $code_data .= '<tr>
+                      <td>'.$code->register_code.'</td>
+                      <td>
+                        <form data-ajax-form data-action="">
+                          <input type="hidden" name="code_id" value="'.(int) $code->register_code_id.'" />
+                          <button type="submit" class="button button-small">Retire Code</button>
+                        </form>
+                      </td>
+                     </tr>';
+      }
+    }
+  }
+
+  $html .= '<div data-overlay-parent><div data-overlay><i class="fa fa-fw fa-spin fa-spinner"></i></div></div>
+            <form data-ajax-form data-action="generate_register_codes">
+              <input type="number" name="number_of_codes" value="" />
+              <button type="submit" class="button btn-primary">Generate Codes</button>
+            </form>
+            <br />
+            <br />
+            <div data-updateable-content="generate_register_codes">
+              <table>
+                <thead>
+                  <th>Code</th>
+                  <th>Actions</th>
+                </thead>
+                <tbody>'.$code_data.'</tbody>
+              </table>
+            </div>';
+
+  echo $html;
+}
+
+
+/**
+ * @package WordPress
+ * @subpackage themename
+ */
+function generate_register_codes()
+{
+  global $wpdb;
+
+  $strings    = array();
+  $data       = $_POST;
+  $characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+
+  if( (int) $data['number_of_codes'] > 0 )
+  {
+    for( $j = 0; $j < (int) $data['number_of_codes']; $j++ )
+    {
+      $code = '';
+
+      for( $i = 0; $i < 12; $i++ )
+      {
+        $code .= $characters[ rand( 0, strlen( $characters ) - 1 ) ];
+      }
+
+      $strings[] = $code;
+
+      $code = '';
+    }
+
+    if( is_array( $strings ) )
+    {
+      foreach( $strings as $string )
+      {
+        $wpdb->insert( 'lrsgen_register_codes', array( 'register_code' => $string, 'register_code_used' => 0 ), array( '%s', '%d' ) );
+      }
+    }
+  }
+
+}
+add_action( 'wp_ajax_generate_register_codes', 'generate_register_codes' );
+add_action( 'wp_ajax_nopriv_generate_register_codes', 'generate_register_codes' );
+
+
+
+
+/**
+ * @package WordPress
+ * @subpackage themename
+ */
+function add_page_header()
+{
+  global $post;
+  global $page_type;
+
+  $html = ' ';
+
+  if( is_object( $post ) )
+  {
+    $html .= '<header class="window-header"><h2>'.$post->post_title.'</h2></header>';
+  }
+
+  echo $html;
+}
+add_action( 'content_header', 'add_page_header', 5 );
+
+
+/**
+ * @package WordPress
+ * @subpackage themename
+ */
+function add_main_menu()
+{
+  $menu = '';
+
+  $args = array(
+  	'theme_location'  => 'primary',
+  	'menu'            => 'primary',
+  	'container'       => false,
+  	'echo'            => false,
+  	'items_wrap'      => '%3$s',
+  );
+
+  $menu = wp_nav_menu( $args );
+
+  echo $menu;
+}
+add_action( 'main_navigation', 'add_main_menu', 10 );
+
+
+/**
+ * @package WordPress
+ * @subpackage themename
+ */
+function remove_admin_bar()
+{
+  if ( !current_user_can('administrator') && !is_admin() )
+  {
+    show_admin_bar(false);
+  }
+}
+add_action('after_setup_theme', 'remove_admin_bar');
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////// START CUSTOM FUNCTIONS ////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
-
-
-function get_rates_tools()
-{
-  echo '<a href="#" data-save-rates class="btn btn-tool"><i class="fa fa-fw fa-save"></i>&nbsp;Save All Rates</a>';
-}
-
-function get_rates_content()
-{
-  $html = $rates = '';
-
-  $hotels = array();
-
-  $args = array( 'post_type' => 'hotel', 'posts_per_page' => '-1', 'orderby' => 'name', 'order' => 'ASC' );
-  $loop = new WP_Query( $args );
-
-  if( $loop->have_posts() )
-  {
-    while( $loop->have_posts() ) : $loop->the_post();
-
-      $hotels[] = new Hotel( $loop->post->ID );
-
-    endwhile;
-  }
-
-  if( count( $hotels ) >= 1 )
-  {
-    foreach( $hotels as $hotel )
-    {
-      $data['hotel'] = $hotel;
-
-      ob_start();
-
-      get_template_part_with_data( 'template','hotel-table-rate', $data );
-
-      $rates .= ob_get_contents();
-
-      ob_get_clean();
-    }
-  }
-
-  if( $rates != null )
-  {
-    $html .= '<table class="hotel-rate-table" data-editable-table>';
-    $html .= '<thead>';
-    $html .= '<th class="hotel-row-action">Full?</th>';
-    $html .= '<th class="hotel-name">Hotel Name:</th>';
-    $html .= '<th class="hotel-phone">Phone:</th>';
-    //$html .= '<th class="hotel-email">Email</th>';
-    $html .= '<th class="hotel-concierge">Concierge</th>';
-    $html .= '<th class="hotel-manager">Manager</th>';
-    $html .= '<th class="hotel-rates">Rates</th>';
-
-    $html .= '</thead>';
-    $html .= '<tbody>';
-    $html .= $rates;
-    $html .= '</tbody>';
-    $html .= '</table>';
-
-  }
-
-  wp_reset_postdata();
-
-  echo $html;
-}
 
 
 
@@ -222,48 +370,7 @@ function get_hotel_room_types( $hotel )
 //////////////////////////////////// START GLOBAL ACTION FUNCTIONS /////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function add_page_header()
-{
-  global $post;
-  global $page_type;
 
-  $html = ' ';
-
-  if( is_object( $post ) )
-  {
-    $html .= '<header class="window-header"><h2>'.$post->post_title.'</h2></header>';
-  }
-
-  echo $html;
-}
-add_action( 'content_header', 'add_page_header', 5 );
-
-function add_main_menu()
-{
-  $menu = '';
-
-  $args = array(
-  	'theme_location'  => 'primary',
-  	'menu'            => 'primary',
-  	'container'       => false,
-  	'echo'            => false,
-  	'items_wrap'      => '%3$s',
-  );
-
-  $menu = wp_nav_menu( $args );
-
-  echo $menu;
-}
-add_action( 'main_navigation', 'add_main_menu', 10 );
-
-function remove_admin_bar()
-{
-  if ( !current_user_can('administrator') && !is_admin() )
-  {
-    show_admin_bar(false);
-  }
-}
-add_action('after_setup_theme', 'remove_admin_bar');
 
 function get_hotel_data()
 {
@@ -290,39 +397,6 @@ add_action( 'hotels_content', 'get_hotel_data' );
 //////////////////////////////////// START INDIVIDUAL ACTION FUNCTIONS /////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function load_login_form()
-{
-  $html = '';
-
-  $data = array();
-
-  wp_enqueue_script('login', get_template_directory_uri().'/js/login.js', array('jquery'), null, true);
-
-  $html .= '<div class="table-cell login-wrap">';
-
-    $html .= '<div class="login-box" data-switch-view="register-box">';
-
-      ob_start();
-      get_template_part_with_data( 'template', 'login-form', $data );
-      $html .= ob_get_contents();
-      ob_get_clean();
-
-    $html .= '</div>';
-
-    $html .= '<div class="register-box" data-switch-view="login-box">';
-
-      ob_start();
-      get_template_part_with_data( 'template', 'login-form', $data );
-      $html .= ob_get_contents();
-      ob_get_clean();
-
-    $html .= '</div>';
-
-  $html .= '</div>';
-
-  echo $html;
-}
-add_action( 'login_page', 'load_login_form', 5 );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////// END INDIVIDUAL ACTION FUNCTIONS ///////////////////////////////

@@ -138,7 +138,6 @@
       user_login:function( resp, instance )
       {
         $.fn.form_msg.init( instance.form_msg );
-
         $.fn.form_msg.add_msg( resp.message, resp.status );
 
         if( resp.status )
@@ -179,13 +178,14 @@
       this.el = el;
       this.el.html('');
     },
-    add_msg:function()
+    add_msg:function( msg, status )
     {
-
+      status ? klass = 'success' : klass = 'error' ;
+      this.el.html( msg ).addClass( 'active ' + klass );
     },
     remove_msg:function()
     {
-
+      this.el.html('').removeClass();
     }
   }
 

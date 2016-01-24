@@ -2,7 +2,7 @@
 
 if( is_array( $login ) )
 {
-  $html .= '<form data-ajax-form data-action="'.$login['action'].'" novalidate><div data-form-msg></div>';
+  $html .= '<form data-ajax-form data-action="'.$login['action'].'" novalidate autocomplete="off"><div data-form-msg></div>';
 
     $html .= '<ul>';
 
