@@ -12,6 +12,7 @@ $login = new Custom_Login();?>
   <div class="table-cell">
 
     <div class="login-page-content floating">
+
       <div class="login-logo">
         <h1>LRS<small>gen</small></h1>
       </div>
@@ -23,6 +24,7 @@ $login = new Custom_Login();?>
           </ul>
         </nav>
         <div data-tabs>
+
           <div class="active" data-tab="login">
             <?php echo $login->get_login_form(); ?>
           </div>

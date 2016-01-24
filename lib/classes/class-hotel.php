@@ -206,7 +206,6 @@ class Hotel extends WP_ACF_CPT
 
     ob_get_clean();
 
-
     echo $html;
   }
 

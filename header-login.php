@@ -20,7 +20,7 @@
 </head>
 <body <?php body_class(); ?>>
 <script type="text/javascript">
-  var ajax_url = '<?php echo admin_url('ajax'); ?>';
+  var ajax_url = '<?php echo admin_url('admin-ajax.php'); ?>';
 </script>
 
 <div class="wrap login-wrap">

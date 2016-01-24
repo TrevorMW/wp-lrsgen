@@ -5,14 +5,16 @@
     action:'',
     pre_callback:'',
     target:'',
+    form_msg:'',
     init:function( el )
     {
       if( el[0] != undefined )
       {
         this.el           = el;
-        this.action       = el.data('action');
-        this.pre_callback = el.data('pre-callback');
-        this.target       = el.data('target');
+        this.action       = this.el.data('action');
+        this.pre_callback = this.el.data('pre-callback');
+        this.target       = this.el.data('target');
+        this.form_msg     = this.el.find('[data-form-msg]');
 
         $.fn.form_btn.init( this.el.find('button[type="submit"]') )
       }
@@ -132,6 +134,24 @@
         resp.status ?  html = resp.data.hotels : html = resp.message;
 
         target.html( html )
+      },
+      user_login:function( resp, instance )
+      {
+        $.fn.form_msg.init( instance.form_msg );
+
+        $.fn.form_msg.add_msg( resp.message, resp.status );
+
+        if( resp.status )
+        {
+          setTimeout( function( data )
+          {
+            window.location = resp.data.redirect_url;
+          }, 1000, resp );
+        }
+      },
+      user_register:function( resp, instance )
+      {
+        console.log( resp, instance )
       }
     }
   }
@@ -149,6 +169,23 @@
     enable:function()
     {
       this.el.removeAttr('disabled');
+    }
+  }
+
+  $.fn.form_msg = {
+    el:'',
+    init:function( el )
+    {
+      this.el = el;
+      this.el.html('');
+    },
+    add_msg:function()
+    {
+
+    },
+    remove_msg:function()
+    {
+
     }
   }
 

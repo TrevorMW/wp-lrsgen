@@ -1,5 +1,0 @@
-<?php $html = '';
-
-
-
-echo $html;

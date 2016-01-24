@@ -16,21 +16,17 @@ class Custom_Login
   {
     $html = '';
 
-    $html .= '<form data-ajax-form data-action="user_login">
-                <ul>
-                  <li class="full">
-                    <label>Username:</label>
-                    <input type="text" name="user_name" value="" />
-                  </li>
-                  <li class="full">
-                    <label>Password:</label>
-                    <input type="password" name="pass" value="" />
-                  </li>
-                  <li class="submit">
-                    <button type="submit" class="btn btn-primary">Login</button>
-                  </li>
-                </ul>
-              </form>';
+    $data['login']['mode']   = 'login';
+    $data['login']['btn']    = 'Login';
+    $data['login']['action'] = 'user_login';
+
+    ob_start();
+
+      get_template_part_with_data( 'login/forms', 'template', 'login-form', $data );
+
+      $html .= ob_get_contents();
+
+    ob_get_clean();
 
     return $html;
   }
@@ -39,27 +35,59 @@ class Custom_Login
   {
     $html = '';
 
-    $html .= '<form data-ajax-form data-action="user_register">
-                <ul>
-                  <li class="full">
-                    <label>Username:</label>
-                    <input type="text" name="user_name" value="" />
-                  </li>
-                  <li class="full">
-                    <label>Password:</label>
-                    <input type="password" name="pass" value="" />
-                  </li>
-                  <li class="full">
-                    <label>Password:</label>
-                    <input type="password_again" name="pass" value="" />
-                  </li>
-                  <li class="submit">
-                    <button type="submit" class="btn btn-primary">Login</button>
-                  </li>
-                </ul>
-              </form>';
+    $data['login']['mode']   = 'register';
+    $data['login']['btn']    = 'Register';
+    $data['login']['action'] = 'user_register';
+
+    ob_start();
+
+      get_template_part_with_data( 'login/forms', 'template', 'login-form', $data );
+
+      $html .= ob_get_contents();
+
+    ob_get_clean();
 
     return $html;
+  }
+
+
+  public function user_login()
+  {
+    global $wpdb;
+
+    $data = $_POST;
+    $resp = new ajax_response( $data['action'], true );
+
+    $login_data['user_login']    = $wpdb->escape( $data['user_name'] );
+    $login_data['user_password'] = $wpdb->escape( $data['pass'] );
+
+    $user_verify = wp_signon( $login_data, false );
+
+    if( is_wp_error( $user_verify ) )
+    {
+      $resp->set_message( 'Incorrect Login credentials. Please try again.' );
+    }
+    else
+    {
+      $resp->set_status( true );
+      $resp->set_message( 'Login successful. Redirecting your now..' );
+      $resp->set_data( array( 'redirect_url' => '/dashboard' ) );
+    }
+
+    echo $resp->encode_response();
+    die();
+  }
+
+
+  public function user_register()
+  {
+    $data = $_POST;
+    $resp = new ajax_response( $data['action'], true );
+
+
+
+    echo $resp->encode_response();
+    die();
   }
 }
 
