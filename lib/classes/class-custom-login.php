@@ -99,15 +99,20 @@ class Custom_Login
       {
       	$user_id = wp_create_user( $username, wp_generate_password( $length = 12, $include_standard_special_chars = false ), $username );
 
+      	wp_new_user_notification( $user_id, null, true );
+
       	if( !is_wp_error( $user_id ) )
       	{
+        	$user = get_user_by( 'id', $user_id );
+
         	$wpdb->update( $wpdb->register_codes,
-        	               array( 'register_code_used' => 1, 'register_code_used_by' => $user_id->data->username ),
-        	               array( 'register_code_id' => (int) $code_data->register_code_id )
+        	               array( 'register_code_used' => 1, 'register_code_used_by' => $user->data->user_login ),
+        	               array( 'register_code' => $wpdb->escape( $data['sec_code'] ) )
         	             );
 
+
         	$resp->set_status( true );
-        	$resp->set_message( $user_id->data->username.' is successfully registered. Please switch to the login tab to login.' );
+        	$resp->set_message(  $user->data->user_login.' is successfully registered. Please switch to the login tab to login.' );
       	}
       	else
       	{
