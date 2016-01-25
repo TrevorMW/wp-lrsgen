@@ -108,8 +108,9 @@ function create_register_codes_table()
   {
     $create_sql = "CREATE TABLE " . $table_name . " (
                     register_code_id INT(11) NOT NULL auto_increment,
-                    register_code VARCHAR(12) NOT NULL ,
+                    register_code VARCHAR(12) NOT NULL,
                     register_code_used BOOLEAN NOT NULL,
+                    register_code_used_by VARCHAR(300) NOT NULL,
                     PRIMARY KEY (register_code_id))$charset_collate;";
   }
 

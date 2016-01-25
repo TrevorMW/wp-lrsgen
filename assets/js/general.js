@@ -150,7 +150,8 @@
       },
       user_register:function( resp, instance )
       {
-        console.log( resp, instance )
+        $.fn.form_msg.init( instance.form_msg );
+        $.fn.form_msg.add_msg( resp.message, resp.status );
       }
     }
   }

@@ -9,7 +9,7 @@ if( is_array( $login ) )
       if( $login['mode'] == 'register' )
       {
         $html .= '<li class="two-third">';
-          $html .= '<label>Username:</label>';
+          $html .= '<label>Email Address:</label>';
           $html .= '<input type="text" name="user_name" value="" />';
         $html .= '</li>';
 
@@ -28,6 +28,8 @@ if( is_array( $login ) )
 
       if( $login['mode'] == 'register' )
       {
+        /*
+
         $html .= '<li class="half">';
           $html .= '<label>Password:</label>';
           $html .= '<input type="password" name="pass" value="" />';
@@ -37,6 +39,8 @@ if( is_array( $login ) )
           $html .= '<label>Retype Password:</label>';
           $html .= '<input type="password" name="pass_again" value="" />';
         $html .= '</li>';
+
+        */
       }
       else
       {

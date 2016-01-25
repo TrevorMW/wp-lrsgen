@@ -51,6 +51,8 @@ class Custom_Login
   }
 
 
+
+
   public function user_login()
   {
     global $wpdb;
@@ -78,13 +80,52 @@ class Custom_Login
     die();
   }
 
-
   public function user_register()
   {
-    $data = $_POST;
-    $resp = new ajax_response( $data['action'], true );
+    global $wpdb;
 
+    $data       = $_POST;
+    $login_data = array();
+    $resp       = new ajax_response( $data['action'], true );
 
+    $code_data = $wpdb->get_results( 'SELECT * FROM '.$wpdb->register_codes.' WHERE 1=1 AND register_code == '. $wpdb->escape( $data['sec_code'] ) );
+
+    if( $code_data->register_code_used == 0 )
+    {
+      $username = $wpdb->escape( $data['user_name'] );
+      $exists   = username_exists( $username );
+
+      if( !$exists )
+      {
+      	$user_id = wp_create_user( $username, wp_generate_password( $length = 12, $include_standard_special_chars = false ), $username );
+
+      	if( !is_wp_error( $user_id ) )
+      	{
+        	$wpdb->update( $wpdb->register_codes,
+        	               array( 'register_code_used' => 1, 'register_code_used_by' => $user_id->data->username ),
+        	               array( 'register_code_id' => (int) $code_data->register_code_id )
+        	             );
+
+        	$resp->set_status( true );
+        	$resp->set_message( $user_id->data->username.' is successfully registered. Please switch to the login tab to login.' );
+      	}
+      	else
+      	{
+        	foreach( $user_id->errors as $k => $error )
+        	{
+          	$resp->set_message( array( $error[0] ) );
+        	}
+      	}
+      }
+      else
+      {
+      	$resp->set_message( 'User already exists. Please use a different email address.' );
+      }
+    }
+    else
+    {
+      $resp->set_message( 'Security token not recognized. Could not register you without a valid security token.' );
+    }
 
     echo $resp->encode_response();
     die();
