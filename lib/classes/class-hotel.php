@@ -96,7 +96,6 @@ class Hotel extends WP_ACF_CPT
     add_action('wp_ajax_filter_hotel_list', array( $this, 'filter_hotel_list' ));
     add_action('wp_ajax_nopriv_filter_hotel_list', array( $this, 'filter_hotel_list' ) );
 
-
     add_action( 'hotels_page_forms', array( $this, 'get_hotel_filters_form' ), 10 );
     add_action( 'hotels_page_tools', array( $this, 'get_hotel_actions' ), 10 );
   }
@@ -106,35 +105,36 @@ class Hotel extends WP_ACF_CPT
   ///////////// MAIN METHODS  /////////////
   ///////////// ///////////////////////////
 
-  public function update_hotel( array $data, $id = null )
+  public function update_hotel( array $data, $id = null, $path = null )
   {
+    global $wpdb;
+
     $result = '';
 
+    // IF ID, ASSUME EDITING IS TAKING PLACE
     if( $id != null )
     {
       $args = array(
         'ID'           => (int) $id,
-        'post_title'   => custom_data_filter( $data['hotel']['hotel_name'], FILTER_SANITIZE_STRING ),
-        'post_name'    => sanitize_title_with_dashes( custom_data_filter( $data['hotel']['hotel_name'], FILTER_SANITIZE_STRING ) ),
-        'post_content' => custom_data_filter( $data['hotel']['hotel_description'], FILTER_SANITIZE_STRING ),
+        'post_title'   => $wpdb->escape( $data['hotel_name'] ),
+        'post_name'    => sanitize_title_with_dashes( $wpdb->escape( $data['hotel_name'] ) ),
+        'post_content' => $wpdb->escape( $data['hotel_description'] ),
         'post_type'    => 'hotel'
       );
 
-      $tax_result = wp_set_object_terms( (int) $id, $data['hotel']['hotel_type'], 'hotel-category', false );
-
-      $result = wp_update_post( $args, true );
-
-      $this->update_hotel_meta( $id );
+      $tax_result = wp_set_object_terms( (int) $id, $data['hotel_type'], 'hotel-category', false );
+      $result     = wp_update_post( $args, true );
+      $this->update_hotel_meta( $data, $result );
     }
     else
     {
       $args = array(
-        'ID'             => '',
-        'post_content'   => $data['hotel']['hotel_content'],
-        'post_name'      => sanitize_title_with_dashes( $data['hotel']['hotel_name'] ),
-        'post_title'     => $data['hotel']['hotel_name'],
-        'post_status'    => 'publish',
-        'post_type'      => 'hotel'
+        'ID'           => '',
+        'post_title'   => $wpdb->escape( $data['hotel_name'] ),
+        'post_name'    => sanitize_title_with_dashes( $wpdb->escape( $data['hotel_name'] ) ),
+        'post_content' => $wpdb->escape( $data['hotel_description'] ),
+        'post_status'  => 'publish',
+        'post_type'    => 'hotel'
       );
 
       $result = wp_insert_post( $args );
@@ -142,15 +142,14 @@ class Hotel extends WP_ACF_CPT
       if( is_int( $result ) )
       {
         $tax_result = wp_set_object_terms( $result, $data['hotel']['hotel_type'], 'hotel-category', false );
-
-        $this->update_hotel_meta( $result );
+        $this->add_hotel_meta( $data, $result );
       }
     }
 
     return $result;
   }
 
-  public function update_hotel_meta( $id )
+  public function update_hotel_meta( $data, $id )
   {
     if( is_int( $id ) )
     {
@@ -163,7 +162,7 @@ class Hotel extends WP_ACF_CPT
         foreach( $fields as $k => $field )
           $meta_fields[ $k ] = $field['key'];
 
-        foreach( $data['hotel'] as $field_id => $val )
+        foreach( $data as $field_id => $val )
         {
           if( array_key_exists( $field_id, $meta_fields ) )
           {
@@ -171,6 +170,29 @@ class Hotel extends WP_ACF_CPT
           }
         }
       }
+    }
+  }
+
+  public function add_hotel_meta( $data, $id )
+  {
+    global $wpdb;
+
+    if( is_array( $data ) && is_int( $id ) )
+    {
+      update_field( 'field_561bc5fd21500', $wpdb->escape( $data['hotel_phone_number'] ),  $id ); //phone number
+      update_field( 'field_561bc61721501', $wpdb->escape( $data['hotel_email_address'] ), $id ); //email
+      update_field( 'field_561bc62721502', $wpdb->escape( $data['hotel_concierge'] ),     $id ); //concierge
+      update_field( 'field_561bc63b21503', $wpdb->escape( $data['hotel_manager'] ) ,      $id ); //manager
+      update_field( 'field_561bc64d21504', $wpdb->escape( $data['hotel_address'] ) ,      $id ); //address
+      update_field( 'field_561bc65921505', $wpdb->escape( $data['hotel_latitude'] ) ,     $id ); //lat
+      update_field( 'field_561bc66821506', $wpdb->escape( $data['hotel_longitude'] ) ,    $id ); //lng
+      update_field( 'field_561bc6a73476a', $wpdb->escape( $data['hotel_room_types'] ) ,   $id ); //room types
+      update_field( 'field_561bc6fb3476c', $wpdb->escape( $data['hotel_pets'] ) ,         $id ); //pets?
+      update_field( 'field_561bc7693476f', $wpdb->escape( $data['hotel_pet_fee'] ) ,      $id ); //pet fee
+      update_field( 'field_561bc7133476d', $wpdb->escape( $data['hotel_smoking'] ) ,      $id ); //smoking?
+      update_field( 'field_561bc77e34770', $wpdb->escape( $data['hotel_smoking_fee'] ) ,  $id ); //smoking fee
+      update_field( 'field_561bc73e3476e', $wpdb->escape( $data['hotel_parking'] ) ,      $id ); //parking?
+      update_field( 'field_561bc79034771', $wpdb->escape( $data['hotel_parking_fee'] ) ,  $id ); //parking fee
     }
   }
 
@@ -323,9 +345,7 @@ class Hotel extends WP_ACF_CPT
     $hotel = new Hotel();
 
     if( !empty( $data ) )
-    {
-      $result = $hotel->update_hotel( $data );
-    }
+      $result = $hotel->update_hotel( $data['hotel'], null, 'add' );
 
     if( is_int( $result ) )
     {
@@ -341,35 +361,40 @@ class Hotel extends WP_ACF_CPT
     }
 
     echo $resp->encode_response();
-
     die();
   }
 
   public function edit_hotel()
   {
-    $data  = $_POST;
-    $resp  = new ajax_response();
-    $hotel = new Hotel( (int) $data['hotel']['hotel_id'] );
+    $result = '';
+    $data   = $_POST;
+    $resp   = new ajax_response();
+    $hotel  = new Hotel( (int) $data['hotel']['hotel_id'] );
 
-    if( !empty( $data ) )
+    if( is_object( $hotel ) && !empty( $data['hotel'] ) )
     {
-      $validation = Hotel::validate_hotel_data( $data['hotel'] );
+      //$validation = Hotel::validate_hotel_data( $data['hotel'] );
 
-      if( $validation['proceed'] )
+      if( true )
       {
-        $result = $hotel->update_hotel( $data, (int) $data['hotel']['hotel_id'] );
+        $result = $hotel->update_hotel( $data['hotel'], $hotel->hotel_id );
       }
       else
       {
         $resp->set_status( false );
         $resp->set_message( $validation['error_msg'] );
       }
-    }
 
-    if( is_int( $result ) )
-    {
-      $resp->set_status( true );
-      $resp->set_message( $hotel->hotel_name.' edited successfully.' );
+      if( is_int( $result ) )
+      {
+        $resp->set_status( true );
+        $resp->set_message( $hotel->hotel_name.' edited successfully.' );
+      }
+      else
+      {
+        $resp->set_status( false );
+        $resp->set_message( 'Could not edit '.$hotel->hotel_name.'. Please try again.' );
+      }
     }
     else
     {
