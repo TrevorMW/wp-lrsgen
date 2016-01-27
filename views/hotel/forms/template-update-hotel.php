@@ -118,7 +118,7 @@ $types = $hotel::get_hotel_category_array(); ?>
           <li class="auto box striped floating" data-boolean-fee-parent>
             <div class="new-checkbox">
         			<label for="hotel-allows-pets">
-        			  <input type="checkbox" id="hotel-allows-pets" data-boolean-fee name="hotel[hotel_pets]" value="" <?php echo checked( $hotel->hotel_pets );?> />
+        			  <input type="checkbox" id="hotel-allows-pets" data-boolean-fee name="hotel[hotel_pets]" <?php echo checked( $hotel->hotel_pets );?> />
         			  <div class="checkbox-parent"><div class="checkbox-child"></div></div>
         			  Hotel Allows Pets?
         			</label>
@@ -131,7 +131,7 @@ $types = $hotel::get_hotel_category_array(); ?>
           <li class="auto box striped floating" data-boolean-fee-parent>
             <div class="new-checkbox">
         			<label for="hotel-allows-smoking">
-        			  <input type="checkbox" id="hotel-allows-smoking" data-boolean-fee name="hotel[hotel_smoking]" value="" <?php echo checked( $hotel->hotel_smoking );?> />
+        			  <input type="checkbox" id="hotel-allows-smoking" data-boolean-fee name="hotel[hotel_smoking]" <?php echo checked( $hotel->hotel_smoking );?> />
         			  <div class="checkbox-parent"><div class="checkbox-child"></div></div>
         			  Hotel Allows Smoking?
         			</label>
@@ -144,7 +144,7 @@ $types = $hotel::get_hotel_category_array(); ?>
           <li class="auto box striped floating" data-boolean-fee-parent>
             <div class="new-checkbox">
         			<label for="hotel-has-parking">
-        			  <input type="checkbox" id="hotel-has-parking" data-boolean-fee name="hotel[hotel_parking]" value="" <?php echo checked( $hotel->hotel_parking );?> />
+        			  <input type="checkbox" id="hotel-has-parking" data-boolean-fee name="hotel[hotel_parking]" <?php echo checked( $hotel->hotel_parking );?> />
         			  <div class="checkbox-parent"><div class="checkbox-child"></div></div>
         			  Hotel Has Parking?
         			</label>

@@ -3,7 +3,6 @@
 if( is_object( $hotel ) )
 {
   $img     = get_the_post_thumbnail( $hotel->hotel_id, 'small');
-  $address = get_field( 'hotel_address', $hotel->hotel_id );
 
   $tools = $hotel->hotel_tools;
 
@@ -20,9 +19,21 @@ if( is_object( $hotel ) )
         $html .= '<h1><a href="'.get_permalink( $hotel->hotel_id  ).'">'.$hotel->hotel_name.'</a></h1>';
         $html .= '</header>';
 
-        $html .= '<div class="wrapper hotel-details">
-                  '.$address.'
-                  </div>';
+        $html .= '<ul class="hotel-details">';
+
+          $html .= '<li class="hotel-detail hotel-address">
+                    '.$hotel->hotel_address.'
+                    </li>';
+
+          $html .= '<li class="hotel-detail hotel-email">
+                      <a href="mailto:'.$hotel->hotel_email_address.'">'.$hotel->hotel_email_address.'</a>
+                    </li>';
+
+          $html .= '<li class="hotel-detail hotel-phone">
+                      <a href="tel:'.$hotel->hotel_phone_number.'">'.$hotel->hotel_phone_number.'</a>
+                    </li>';
+
+        $html .= '</ul>';
 
       $html .= '</div>';
 

@@ -48,6 +48,10 @@ body{
     padding:25px;
   }
 
+  &.single-hotel-directions{
+    border-bottom:1px solid #ddd;
+  }
+
 }
 
 .container{
@@ -114,6 +118,15 @@ body{
     width:70px;
     padding:0;
     text-align: right;
+  }
+
+  .single-hotel-directions &{
+    padding:15px;
+    text-align: right;
+
+    &:first-child{
+      text-align: left;
+    }
   }
 
   .hotel-directions .container > &,
@@ -202,12 +215,17 @@ ul,ol{
   margin:0;
   padding:0;
 
-  &.hotel-list{
+  &.hotel-list,
+  &.hotel-details{
     list-style: none;
 
     &:after{
       .clearfix();
     }
+  }
+
+  &.hotel-details{
+    padding:0;
   }
 }
 
@@ -215,15 +233,16 @@ li{
 
   &.hotel{
     float:left;
-    width:23.7%;
+    max-width:400px;
     margin: 0 1.5% 1.5% 0;
+  }
 
-    &:last-child{
-      margin-right:0;
-    }
+  .hotel-details &{
+    border-top:1px dashed #ccc;
+    padding:15px 10px;
 
-    &:nth-child(4n){
-      margin-right:0;
+    &:first-child{
+      border-top:0;
     }
   }
 }
@@ -331,7 +350,6 @@ i.fa{
 
 .page-forms{
   text-align: right;
-  padding: 20px 20px 0 20px;
 }
 
 .page-tools{
@@ -343,6 +361,11 @@ i.fa{
 
 [data-map-canvas]{
   border:1px solid #ccc;
+  height:350px;
+
+  .hotel-map&{
+    border-top:0;
+  }
 }
 
 [data-overlay-parent]{

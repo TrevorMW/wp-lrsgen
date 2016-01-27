@@ -9,28 +9,25 @@ global $page_type, $current_hotel;
 
 get_header();
 
-$map_data = array( 'lat'  => $current_hotel->hotel_latitude,
-                   'lng'  => $current_hotel->hotel_longitude,
-                   'zoom' => 12 );
 
 if( is_object( $current_hotel ) ) { ?>
 
   <div class="wrapper hotel-directions">
     <div class="container table" style="height:inherit;">
       <div class="table-cell half directions">
-        <form data-ajax-form data-action="get_hotel_directions_data">
+        <form data-map-directions data-updateable-content="data-directions-results">
           <fieldset class="panel">
             <div class="panel-header"><legend>Direction Addresses</legend></div>
             <div class="panel-content">
               <ul>
                 <li class="full">
                   <label>Starting Address:</label>
-                  <input type="text" name="hotel_directions[directions_start]" value="<?php echo $current_hotel->hotel_address ?>" readonly />
+                  <input type="text" name="start" value="<?php echo $current_hotel->hotel_address ?>" readonly />
                 </li>
 
                 <li class="full">
                   <label>End Address:</label>
-                  <input type="text" name="hotel_directions[directions_end]" value="" />
+                  <input type="text" name="end" value="" />
                 </li>
 
                 <li class="submit">
@@ -46,13 +43,13 @@ if( is_object( $current_hotel ) ) { ?>
             <div class="table-cell"><h3>Directions</h3></div>
             <div class="table-cell panel-button"><a href="#" data-print="#printable-content" disabled><i class="fa fa-print"></i></a></div>
           </div>
-          <div class="panel-content" id="printable-content">
+          <div class="panel-content" data-directions-results id="printable-content">
 
           </div>
         </div>
       </div>
       <div class="table-cell half location-map">
-        <div data-map-canvas data-options='<?php echo json_encode( $map_data );?>' style="height:75vh;"></div>
+        <div data-map-canvas data-map-canvas data-lat="<?php echo $current_hotel->hotel_latitude; ?>" data-lng="<?php echo $current_hotel->hotel_longitude; ?>" style="height:75vh;"></div>
       </div>
     </div>
   </div>

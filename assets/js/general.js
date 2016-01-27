@@ -203,12 +203,14 @@
       zoom:14
     },
     options:{},
+    directions_service:'',
+    directions_display:'',
     init:function( el, options )
     {
       this.el   = el;
-      this.lat  = this.el.data('lat')  != '' ? this.el.data('lat') : null ;
-      this.lng  = this.el.data('lng')  != '' ? this.el.data('lng') : null ;
-      this.zoom = this.el.data('zoom') != '' ? this.el.data('lng') : 14   ;
+      this.lat  = this.el.data('lat')  != '' ? this.el.data('lat')  : null ;
+      this.lng  = this.el.data('lng')  != '' ? this.el.data('lng')  : null ;
+      this.zoom = this.el.data('zoom') != '' ? this.el.data('zoom') : 14   ;
 
       if( this.lat != null )
         this.defaults.center.lat = this.lat;
@@ -225,6 +227,15 @@
       this.set_marker( this.el.data('drag') ? true : false );
       this.update_lat = this.el.closest('form').find('[data-update-lat]')
       this.update_lng = this.el.closest('form').find('[data-update-lng]')
+
+      this.directions_service = new google.maps.DirectionsService;
+      this.directions_display = new google.maps.DirectionsRenderer;
+
+      $(document).on( 'set_directions', this, function( e, data )
+      {
+        e.data.set_route( e, data )
+      })
+
     },
     set_marker:function( draggable )
     {
@@ -245,6 +256,66 @@
       this.options.center.lat = data.lat
       this.options.center.lng = data.lng
       this.init( this.el, this.options )
+    },
+    set_route:function( e, directions  )
+    {
+      var target    = directions.target,
+          form_data = directions.el.serializeArray(),
+          data = {}
+
+      $.each( form_data, function()
+      {
+        if( data[this.name] !== undefined )
+        {
+          if( !data[this.name].push )
+            data[this.name] = [ data[this.name] ];
+
+          data[this.name].push( this.value || '' );
+        }
+        else
+        {
+          data[this.name] = this.value || '';
+        }
+      });
+
+      e.data.directions_service.route({
+        origin: data.start,
+        destination: data.end,
+        travelMode: google.maps.TravelMode.DRIVING
+      },
+      function( response, status )
+      {
+        if (status === google.maps.DirectionsStatus.OK)
+        {
+          e.data.directions_display.setDirections(response);
+        }
+        else
+        {
+          window.alert('Directions request failed due to ' + status);
+        }
+      });
+
+      e.data.directions_display.setPanel( directions.target[0] );
+      e.data.directions_display.setMap( e.data.map );
+    }
+  }
+
+  $.fn.directions = {
+    el:'',
+    target:'',
+    init:function( el, target )
+    {
+      this.el = el;
+
+      if( this.el.data('updateable-content') )
+        this.target = $('['+ this.el.data('updateable-content') +']')
+
+      this.el.submit( this, function( e )
+      {
+        e.preventDefault();
+
+        $(document).trigger( 'set_directions', e.data )
+      })
     }
   }
 
@@ -341,6 +412,8 @@
     if( $('[data-tabs]')[0] != undefined && $('[data-tab-triggers]')[0] != undefined )
       $.fn.tabs.init( $('[data-tabs]'), $('[data-tab-triggers]') );
 
+    if( $('[data-map-directions]')[0] != undefined )
+      $.fn.directions.init( $('[data-map-directions]') );
 
     if( $('[data-fireable-input]')[0] != undefined )
     {
