@@ -4,22 +4,28 @@
  * @subpackage themename
  */
 
-
-/** Require Classes **/
-
+// LOAD HELPER CLASSES
 require_once('lib/classes/class-wp-acf-cpt.php');
-require_once('lib/classes/class-geocoder.php');
 require_once('lib/classes/class-validation.php');
 require_once('lib/classes/class-ajax_response.php');
+require_once('lib/classes/class-geocoder.php');
 require_once('lib/classes/class-form-helper.php');
+require_once('lib/classes/class-wrappers.php');
+require_once('lib/classes/class-action_name.php');
+
+
+// LOAD CORE CLASSES
 require_once('lib/classes/class-hotel.php');
 require_once('lib/classes/class-reservation.php');
-require_once('lib/classes/class-action_name.php');
+require_once('lib/classes/class-dashboard.php');
 require_once('lib/classes/class-custom-login.php');
 
+
 /**
- * @package WordPress
- * @subpackage themename
+ * add_global_query_args function.
+ *
+ * @access public
+ * @return void
  */
 function add_global_query_args()
 {
@@ -35,9 +41,13 @@ function add_global_query_args()
 add_action( 'init', 'add_global_query_args' );
 
 
+
 /**
- * @package WordPress
- * @subpackage themename
+ * instantiate_globals function.
+ *
+ * @access public
+ * @param mixed $post
+ * @return void
  */
 function instantiate_globals( $post )
 {
@@ -66,9 +76,12 @@ function instantiate_globals( $post )
 add_action( 'add_globals', 'instantiate_globals', 10, 1 );
 
 
+
 /**
- * @package WordPress
- * @subpackage themename
+ * check_if_user_exists function.
+ *
+ * @access public
+ * @return void
  */
 function check_if_user_exists()
 {
@@ -82,8 +95,10 @@ add_action( 'template_redirect', 'check_if_user_exists' );
 
 
 /**
- * @package WordPress
- * @subpackage themename
+ * go_home function.
+ *
+ * @access public
+ * @return void
  */
 function go_home()
 {
@@ -93,9 +108,12 @@ function go_home()
 add_action('wp_logout','go_home');
 
 
+
 /**
- * @package WordPress
- * @subpackage themename
+ * create_register_codes_table function.
+ *
+ * @access public
+ * @return void
  */
 function create_register_codes_table()
 {
@@ -126,9 +144,12 @@ function create_register_codes_table()
 add_action( 'init', 'create_register_codes_table' );
 
 
+
 /**
- * @package WordPress
- * @subpackage themename
+ * example_add_dashboard_widgets function.
+ *
+ * @access public
+ * @return void
  */
 function example_add_dashboard_widgets() {
 
@@ -137,9 +158,12 @@ function example_add_dashboard_widgets() {
 add_action( 'wp_dashboard_setup', 'example_add_dashboard_widgets' );
 
 
+
 /**
- * @package WordPress
- * @subpackage themename
+ * build_register_codes_widget function.
+ *
+ * @access public
+ * @return void
  */
 function build_register_codes_widget()
 {
@@ -189,9 +213,12 @@ function build_register_codes_widget()
 }
 
 
+
 /**
- * @package WordPress
- * @subpackage themename
+ * generate_register_codes function.
+ *
+ * @access public
+ * @return void
  */
 function generate_register_codes()
 {
@@ -231,11 +258,11 @@ add_action( 'wp_ajax_generate_register_codes', 'generate_register_codes' );
 add_action( 'wp_ajax_nopriv_generate_register_codes', 'generate_register_codes' );
 
 
-
-
 /**
- * @package WordPress
- * @subpackage themename
+ * add_page_header function.
+ *
+ * @access public
+ * @return void
  */
 function add_page_header()
 {
@@ -255,8 +282,10 @@ add_action( 'content_header', 'add_page_header', 5 );
 
 
 /**
- * @package WordPress
- * @subpackage themename
+ * add_main_menu function.
+ *
+ * @access public
+ * @return void
  */
 function add_main_menu()
 {
@@ -278,8 +307,10 @@ add_action( 'main_navigation', 'add_main_menu', 10 );
 
 
 /**
- * @package WordPress
- * @subpackage themename
+ * remove_admin_bar function.
+ *
+ * @access public
+ * @return void
  */
 function remove_admin_bar()
 {
@@ -289,6 +320,7 @@ function remove_admin_bar()
   }
 }
 add_action('after_setup_theme', 'remove_admin_bar');
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////// START CUSTOM FUNCTIONS ////////////////////////////////////////

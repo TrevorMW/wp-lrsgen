@@ -15,7 +15,7 @@
 <?php wp_head(); do_action( 'add_globals', $post );  ?>
 <script type="text/javascript">
   var ajax_url = '<?php echo admin_url('admin-ajax.php'); ?>',
-      load_map;
+      load_map = function(){}
 </script>
 </head>
 <?php global $page_type; ?>
@@ -51,13 +51,7 @@
       <div class="main-content-area">
         <?php do_action('flash_messages'); do_action( $page_type.'flash_messages'); //var_dump( $page_type.'flash_messages' );?>
 
-        <div class="wrapper tools">
-          <div class="table">
-            <div class="table-cell page-forms">
-              <?php do_action('page_forms'); do_action( $page_type.'page_forms'); //var_dump( $page_type.'page_tools' ); ?>
-            </div>
-          </div>
-        </div>
+        <?php do_action('page_forms'); do_action( $page_type.'page_forms'); //var_dump( $page_type.'page_tools' ); ?>
 
         <?php do_action('main_content'); do_action( $page_type.'main_content');  //var_dump( $page_type.'main_content' ) ?>
 

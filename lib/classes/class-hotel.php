@@ -224,7 +224,7 @@ class Hotel extends WP_ACF_CPT
 
       get_template_part_with_data( 'hotel/forms','template', 'hotel-filters', $data );
 
-      $html .= ob_get_contents();
+      $html .= Wrappers::page_forms_wrapper( ob_get_contents() );
 
     ob_get_clean();
 

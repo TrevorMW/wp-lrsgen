@@ -40,7 +40,14 @@ body{
     color:#444;
   }
 
-  &.hotel-list,
+  &.page-forms{
+    padding:15px;
+  }
+
+  &.hotel-list{
+    padding:0 25px;
+  }
+
   &.add-hotel-form,
   &.edit-hotel-form,
   &.new-reservation,
@@ -50,6 +57,12 @@ body{
 
   &.single-hotel-directions{
     border-bottom:1px solid #ddd;
+  }
+
+  &.dashboard-data{
+    font-size:26px;
+    font-weight:600;
+    color:#444;
   }
 
 }
@@ -67,6 +80,10 @@ body{
   table-layout: fixed;
   width:100%;
 
+  &.auto{
+    table-layout:auto;
+  }
+
   & .mini-toolbar{
     border-top:1px dashed #ccc;
   }
@@ -77,9 +94,16 @@ body{
   width:100%;
   vertical-align: top;
 
+  .single-hotel-directions &,
+  .login-page &,
+  & .logo,
+  .panel-header &,
+  [data-accordion] &{
+    vertical-align: middle;
+  }
+
   .login-page &{
     height:100%;
-    vertical-align: middle;
     text-align: center;
   }
 
@@ -90,7 +114,6 @@ body{
 
   & .logo{
     padding:25px 0;
-    vertical-align: middle;
     background-color:@crimson;
     text-align: center;
   }
@@ -111,7 +134,6 @@ body{
   .panel-header &{
     padding:0 20px;
     width:100%;
-    vertical-align: middle;
   }
 
   &.panel-button{
@@ -126,6 +148,23 @@ body{
 
     &:first-child{
       text-align: left;
+    }
+  }
+
+  &.accordion-close{
+    width:auto;
+
+    & div{
+      width:0;
+      overflow:hidden;
+      text-align: center;
+      .transition( width .3s);
+    }
+
+    &.active div{
+      width:auto;
+      border-right:1px solid #ccc;
+      text-align: center;
     }
   }
 
@@ -167,7 +206,7 @@ main{
 }
 
 .window-utility-box{
-  border-bottom:1px solid #ddd;
+  border-bottom:1px solid #ccc;
 }
 
 header{
@@ -193,6 +232,10 @@ header{
     padding:25px 0;
     border-bottom:1px solid #ddd;
   }
+
+  [data-accordion] &{
+    border-bottom:1px solid #ccc;
+  }
 }
 
 footer{
@@ -216,7 +259,8 @@ ul,ol{
   padding:0;
 
   &.hotel-list,
-  &.hotel-details{
+  &.hotel-details,
+  .dashboard-data &{
     list-style: none;
 
     &:after{
@@ -238,8 +282,9 @@ li{
   }
 
   .hotel-details &{
-    border-top:1px dashed #ccc;
-    padding:15px 10px;
+    border-top:1px dashed #bbb;
+    padding:15px;
+    background-color:#eee;
 
     &:first-child{
       border-top:0;
@@ -282,6 +327,21 @@ a{
 
     &:hover{
       background-color:#f4f4f4;
+    }
+  }
+
+  .dashboard-data &{
+    display: block;
+    width:100%;
+    padding:20px;
+  }
+
+  .accordion-close &{
+    padding:20px;
+    font-size:24px;
+
+    .active &{
+      display: inline-block;
     }
   }
 }
@@ -329,6 +389,17 @@ i.fa{
   line-height:60px;
 }
 
+.page-forms{
+  text-align: right;
+}
+
+.page-tools{
+  float:right;
+  height:100%;
+  padding:18px 0;
+  margin-right:15px;
+}
+
 [data-tabs]{
   border:1px solid #ccc;
   border-top:0;
@@ -346,17 +417,6 @@ i.fa{
     height:auto;
     min-height:250px;
   }
-}
-
-.page-forms{
-  text-align: right;
-}
-
-.page-tools{
-  float:right;
-  height:100%;
-  padding:18px 0;
-  margin-right:15px;
 }
 
 [data-map-canvas]{
@@ -389,6 +449,7 @@ i.fa{
     height:100%;
   }
 }
+
 [data-overlay]{
   display: table-cell;
   vertical-align: middle;
@@ -420,6 +481,22 @@ i.fa{
   &.error{
     background-color:pink;
     color:darkred;
+  }
+}
+
+[data-accordion-content]{
+  height:0;
+  opacity:0;
+  overflow:hidden;
+  background-color:#fff;
+  .transition( opacity height .3s);
+
+  &.active{
+    height:90vh;
+  }
+
+  &.visible{
+    opacity:1;
   }
 }
 

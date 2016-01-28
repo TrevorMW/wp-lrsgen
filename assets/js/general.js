@@ -107,55 +107,6 @@
     }
   }
 
-  $.fn.callback_bank = {
-    filters:
-    {
-      // PRE_CALLBACKS **ALWAYS** NEED TO RETURN FORM DATA, REGARDLESS OF DOING ANYTHING WITH IT.
-      before_form_submit:function( form_data )
-      {
-        return data;
-      }
-    },
-    callbacks:
-    {
-      ajax_login:function( resp, instance )
-      {
-
-      },
-      new_reservation:function( resp, instance )
-      {
-
-      },
-      filter_hotel_list:function( resp, instance )
-      {
-        var target = $('[data-updateable-content="' + instance.target + '"]'),
-            html;
-
-        resp.status ?  html = resp.data.hotels : html = resp.message;
-
-        target.html( html )
-      },
-      user_login:function( resp, instance )
-      {
-        $.fn.form_msg.init( instance.form_msg );
-        $.fn.form_msg.add_msg( resp.message, resp.status );
-
-        if( resp.status )
-        {
-          setTimeout( function( data )
-          {
-            window.location = resp.data.redirect_url;
-          }, 1000, resp );
-        }
-      },
-      user_register:function( resp, instance )
-      {
-        $.fn.form_msg.init( instance.form_msg );
-        $.fn.form_msg.add_msg( resp.message, resp.status );
-      }
-    }
-  }
-
   $.fn.form_btn = {
     el:'',
     init:function( el )
@@ -401,6 +352,44 @@
     }
   }
 
+  $.fn.accordion = {
+    el:'',
+    trigger:'',
+    target:'',
+    callback:'',
+    init:function( trigger )
+    {
+      this.el       = trigger.closest('[data-accordion]')
+      this.trigger  = trigger
+      this.target   = trigger.closest('[data-accordion]').find('[data-accordion-content]')
+      this.callback = trigger.data('callback')
+
+      this.toggle_accordion();
+    },
+    toggle_accordion:function()
+    {
+      setTimeout(function( data )
+      {
+        data.target.toggleClass('visible')
+      }, 400, this )
+
+      this.trigger.toggleClass('active')
+      this.el.find('.accordion-close').toggleClass('active');
+      this.target.toggleClass('active')
+    }
+  }
+
+  $.fn.trigger_data = {
+    init:function()
+    {
+
+    },
+    call_data:function()
+    {
+
+    }
+  }
+
   $(document).ready(function()
   {
     if( $('[data-validate-cc-card ]')[0] != undefined )
@@ -422,6 +411,15 @@
         $(this).closest('form').trigger( 'submit' )
       })
     }
+
+    if( $('[data-accordion]')[0] != undefined )
+    {
+      $(document).on( 'click', '[data-accordion-trigger]', function()
+      {
+        $.fn.accordion.init( $(this) )
+      })
+    }
+
 
     if( $('[data-ajax-form]')[0] != undefined )
     {
@@ -501,6 +499,56 @@
     })
 
   })
+
+
+  $.fn.callback_bank = {
+    filters:
+    {
+      // PRE_CALLBACKS **ALWAYS** NEED TO RETURN FORM DATA, REGARDLESS OF DOING ANYTHING WITH IT.
+      before_form_submit:function( form_data )
+      {
+        return data;
+      }
+    },
+    callbacks:
+    {
+      new_reservation:function( resp, instance )
+      {
+
+      },
+      filter_hotel_list:function( resp, instance )
+      {
+        var target = $('[data-updateable-content="' + instance.target + '"]'),
+            html;
+
+        resp.status ?  html = resp.data.hotels : html = resp.message;
+
+        target.html( html )
+      },
+      user_login:function( resp, instance )
+      {
+        $.fn.form_msg.init( instance.form_msg );
+        $.fn.form_msg.add_msg( resp.message, resp.status );
+
+        if( resp.status )
+        {
+          setTimeout( function( data )
+          {
+            window.location = resp.data.redirect_url;
+          }, 1000, resp );
+        }
+      },
+      user_register:function( resp, instance )
+      {
+        $.fn.form_msg.init( instance.form_msg );
+        $.fn.form_msg.add_msg( resp.message, resp.status );
+      },
+      open_accordion:function()
+      {
+
+      }
+    }
+  }
 
 
 })( jQuery, window );
