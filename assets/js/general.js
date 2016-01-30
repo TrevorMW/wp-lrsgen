@@ -67,42 +67,24 @@
     }
   }
 
-  $.fn.progress = {
-    el:'',
-    init:function( el )
-    {
-      this.el = el;
-    },
-    show_progress:function()
-    {
-      this.el.addClass('active');
-    },
-    hide_progress:function()
-    {
-      this.el.removeClass('active');
-    }
-  }
-
   $.fn.wp_get = {
     action:'',
     init:function( action )
     {
       if( action != null )
-      {
         this.action = action;
-      }
     },
     make_request: function( before, after_request, event_data  )
     {
-      data        = {};
-      data.action = this.action;
+      data          = {};
+      data.action   = this.action;
 
       if( typeof before == 'function' )
         data = before( data, event_data )
 
       $.post( ajax_url, data, function( response )
       {
-        typeof after_request == 'function' ? after_request( $.parseJSON( response ) ) : '' ;
+        typeof after_request == 'function' ? after_request( event_data, $.parseJSON( response ) ) : '' ;
       });
     }
   }
@@ -357,6 +339,7 @@
     trigger:'',
     target:'',
     callback:'',
+    is_open:false,
     init:function( trigger )
     {
       this.el       = trigger.closest('[data-accordion]')
@@ -364,9 +347,15 @@
       this.target   = trigger.closest('[data-accordion]').find('[data-accordion-content]')
       this.callback = trigger.data('callback')
 
-      this.toggle_accordion();
+      this.toggle_accordion( function( data )
+      {
+        if( data.is_open )
+        {
+          $(document).trigger( 'find_deferred_data', data )
+        }
+      });
     },
-    toggle_accordion:function()
+    toggle_accordion:function( func )
     {
       setTimeout(function( data )
       {
@@ -376,22 +365,78 @@
       this.trigger.toggleClass('active')
       this.el.find('.accordion-close').toggleClass('active');
       this.target.toggleClass('active')
+
+      this.trigger.hasClass('active') ? this.is_open = true : this.is_open = false ;
+
+      typeof func == 'function' ? func( this ) : '' ;
     }
   }
 
-  $.fn.trigger_data = {
+  $.fn.loadable_content = {
+    el:'',
+    action: '',
+    extra_data:'',
+    init:function( el, extra_data )
+    {
+      this.el         = el;
+      this.action     = this.el.data('loadable-content')
+      this.extra_data = extra_data;
+    },
+    load_content:function()
+    {
+      $.fn.wp_get.init( this.action )
+      $.fn.wp_get.make_request( function( data, instance )
+      {
+        data.variable_data = instance.extra
+        return data
+      },
+      function( instance, resp )
+      {
+        resp.status ? instance.el.html( resp.data.loadable_content ) : '' ;
+
+      }, this )
+    }
+  }
+
+  $.fn.loadable_data = {
     init:function()
     {
+      $(document).on( 'find_immediate_data', this, function( e )
+      {
+        e.data.find_immediate_data()
+      })
 
+      $(document).on( 'find_deferred_data', this, function( e, data )
+      {
+        e.data.find_deferred_data( data  )
+      })
     },
-    call_data:function()
+    find_immediate_data:function()
     {
-
+      $(document).find('[data-loadable-content]').each(function()
+      {
+        if( $(this).data('load-when') == 'now')
+        {
+          $.fn.loadable_content.init( $(this), $(this).data('load-extra') )
+          $.fn.loadable_content.load_content( $.fn.loadable_content );
+        }
+      })
+    },
+    find_deferred_data:function( data )
+    {
+      data.target.find('[data-loadable-content]').each(function()
+      {
+        $.fn.loadable_content.init( $(this), $(this).data('load-extra') )
+        $.fn.loadable_content.load_content( $.fn.loadable_content );
+      })
     }
   }
 
   $(document).ready(function()
   {
+    $.fn.loadable_data.init();
+    $(this).trigger( 'find_immediate_data' )
+
     if( $('[data-validate-cc-card ]')[0] != undefined )
       $.fn.cc.init( $('[data-validate-cc-card ]'), $('[data-cc-input]'), $('[data-card-type]') )
 
@@ -419,7 +464,6 @@
         $.fn.accordion.init( $(this) )
       })
     }
-
 
     if( $('[data-ajax-form]')[0] != undefined )
     {
@@ -450,6 +494,11 @@
         $.fn.maps.init( $('[data-map-canvas]') );
       }
     }
+
+    $(document).on('ready', function()
+    {
+      $(this).trigger( 'load_data', $(document) );
+    })
 
     $(document).on( 'click', '[data-refesh-map]', function()
     {

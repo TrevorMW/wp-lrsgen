@@ -2,6 +2,8 @@
 
 $inc == 0 ? $class         = 'active'         : $class = '' ;
 $inc == 0 ? $content_class = 'active visible' : $content_class = '' ;
+$inc != 0 ? $load_at       = 'deferred'       : $load_at = 'now' ;
+
 
 if( $date_title != null )
 {
@@ -11,7 +13,9 @@ if( $date_title != null )
                       <div class="table-cell"><a href="#" class="'.$class.'" data-accordion-trigger>'.$date_title.' </a></div>
                     </header>
                     <section class="'.$content_class.'" data-accordion-content>
+                      <div data-loadable-content="get_date_data" data-load-when="'.$load_at.'" data-load-extra="'.strtotime( $date_title ).'">
 
+                      </div>
                     </section>
                   </li>';
 }
