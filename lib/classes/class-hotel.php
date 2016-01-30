@@ -96,8 +96,13 @@ class Hotel extends WP_ACF_CPT
     add_action('wp_ajax_filter_hotel_list', array( $this, 'filter_hotel_list' ));
     add_action('wp_ajax_nopriv_filter_hotel_list', array( $this, 'filter_hotel_list' ) );
 
+    add_action('wp_ajax_load_hotels_async', array( $this, 'load_hotels_async' ) );
+    add_action('wp_ajax_nopriv_load_hotels_async', array( $this, 'load_hotels_async' ) );
+
     add_action( 'hotels_page_forms', array( $this, 'get_hotel_filters_form' ), 10 );
     add_action( 'hotels_page_tools', array( $this, 'get_hotel_actions' ), 10 );
+
+    add_action( 'hotels_content', array( $this, 'get_hotel_data' ) );
   }
 
 
@@ -239,6 +244,15 @@ class Hotel extends WP_ACF_CPT
     echo $html;
   }
 
+  public function get_hotel_data()
+  {
+    $html = '';
+
+    $html .= '<div class="wrapper hotel-list" data-loadable-content="load_hotels_async" data-load-when="now" data-updateable-content="filter_hotels"></div>';
+
+    echo $html;
+  }
+
 
   /////////////////////////////////////////
   ///////////// STATIC METHODS  ///////////
@@ -292,7 +306,7 @@ class Hotel extends WP_ACF_CPT
     return true;
   }
 
-  public static function get_all_hotels( $args = null )
+  public function get_all_hotels( $args = null )
   {
     $html = '';
 
@@ -308,7 +322,7 @@ class Hotel extends WP_ACF_CPT
 
     if( $hotels->have_posts() )
     {
-      $html .= '<ul class="hotel-list" data-updateable-content="filter_hotels">';
+      $html .= '<ul class="hotel-list">';
 
       while( $hotels->have_posts() ) : $hotels->the_post();
 
@@ -330,7 +344,6 @@ class Hotel extends WP_ACF_CPT
     wp_reset_postdata();
 
     return $html;
-
   }
 
 
@@ -488,6 +501,19 @@ class Hotel extends WP_ACF_CPT
     {
       $resp->set_message( 'No Hotels found. Try again hoss.' );
     }
+
+    echo $resp->encode_response();
+    die();
+  }
+
+  public function load_hotels_async()
+  {
+    $data  = $_POST;
+    $hotel = new Hotel();
+    $resp  = new ajax_response( $data['action'], true );
+
+    $resp->set_status( true );
+    $resp->set_data( array( 'loadable_content' => $hotel->get_all_hotels( $args ) ) );
 
     echo $resp->encode_response();
     die();

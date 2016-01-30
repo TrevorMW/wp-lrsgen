@@ -34,9 +34,13 @@ body{
     background-color:white;
   }
 
+  &.dashboard-global-data,
+  &.login-page{
+    background-color:#fff;
+  }
+
   &.login-page{
     height:100vh;
-    background-color:#fff;
     color:#444;
   }
 
@@ -55,11 +59,24 @@ body{
     padding:25px;
   }
 
-  &.single-hotel-directions{
+  &.single-hotel-directions,
+  &.dashboard-form{
     border-bottom:1px solid #ddd;
   }
 
-  &.dashboard-data{
+  &.dashboard-form{
+    background-color:@paleRed;
+    border:0;
+  }
+
+  &.dashboard-global-data,
+  &.dashboard-date-data{
+    height:42.5vh;
+    overflow-y:scroll;
+  }
+
+  &.dashboard-global-data,
+  &.dashboard-date-data{
     font-size:26px;
     font-weight:600;
     color:#444;
@@ -86,6 +103,10 @@ body{
 
   & .mini-toolbar{
     border-top:1px dashed #ccc;
+  }
+
+  .dashboard-global-data &{
+    height:inherit;
   }
 }
 
@@ -171,6 +192,17 @@ body{
   .hotel-directions .container > &,
   .reservation-sheet footer &{
     padding:20px;
+  }
+
+  .dashboard-global-data &{
+    padding:20px;
+    border-left:1px solid #ccc;
+    height:100%;
+    vertical-align: top;
+
+    &:first-child{
+      border:0;
+    }
   }
 }
 
@@ -260,7 +292,7 @@ ul,ol{
 
   &.hotel-list,
   &.hotel-details,
-  .dashboard-data &{
+  .dashboard-date-data &{
     list-style: none;
 
     &:after{
@@ -330,7 +362,7 @@ a{
     }
   }
 
-  .dashboard-data &{
+  .dashboard-date-data &{
     display: block;
     width:100%;
     padding:20px;
@@ -492,7 +524,7 @@ i.fa{
   .transition( opacity height .3s);
 
   &.active{
-    height:90vh;
+    height:39vh;
     padding:20px;
     border-bottom:1px solid #ccc;
   }

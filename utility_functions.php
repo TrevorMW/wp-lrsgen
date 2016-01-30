@@ -161,20 +161,6 @@ add_action( 'admin_enqueue_scripts', 'add_javascript' );
 
 
 /**
- *
- * TAKE GLOBAL DESCRIPTION OUT OF HEADER.PHP AND GENERATE IT FROM A FUNCTION
- *
- */
-function site_global_description()
-{
-	global $page, $paged;
-	$site_description = get_bloginfo( 'description', 'display' );
-	if ( $site_description && ( is_home() || is_front_page() ) )
-		echo " | $site_description";
-}
-
-
-/**
  * REMOVE UNWANTED CAPITAL <P> TAGS
  */
 remove_filter( 'the_content', 'capital_P_dangit' );
@@ -226,25 +212,3 @@ function admin_bar_replace_howdy($wp_admin_bar)
   $wp_admin_bar->add_node(array('id' => 'my-account', 'title' => $replace));
 }
 add_filter('admin_bar_menu', 'admin_bar_replace_howdy', 25);
-
-
-function change_search_form( $form )
-{
-  global $post;
-
-  $form = '<form role="search" method="get" data-search-form action="' . esc_url( home_url( '/' ) ) . '">
-              <input type="hidden" name="page_identifier" value="'.$post->ID.'" />
-              <ul class="inline">
-                <li class="inline-input">
-                  <label class="acc">' . _x( 'Search for:', 'label' ) . '</label>
-                  <input type="search" class="search-field" placeholder="' . esc_attr_x( 'Search &hellip;', 'placeholder' ) . '" value="' . get_search_query() . '" name="s" title="' . esc_attr_x( 'Search for:', 'label' ) . '" />
-                </li>
-                <li class="inline-trigger">
-                  <button type="submit"><i class="fa fa-fw fa-search"></i></button>
-                </li>
-              </ul>
-      		 </form>';
-
-  return $form;
-}
-add_filter( 'get_search_form', 'change_search_form' );

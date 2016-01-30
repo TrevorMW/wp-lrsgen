@@ -7,6 +7,9 @@ class Dashboard
   {
     add_action( 'wp_ajax_get_date_data', array( $this, 'get_date_data' ) );
     add_action( 'wp_ajax_nopriv_get_date_data', array( $this, 'get_date_data' ) );
+
+    add_action( 'wp_ajax_filter_dashboard_dates', array( $this, 'filter_dashboard_dates' ) );
+    add_action( 'wp_ajax_nopriv_filter_dashboard_dates', array( $this, 'filter_dashboard_dates' ) );
   }
 
 
@@ -14,15 +17,24 @@ class Dashboard
   ///////////// MAIN METHODS  /////////////
   ///////////// ///////////////////////////
 
-  public function get_dashboard_data()
+  public function get_dashboard_data( $days = null )
   {
     $html = '';
 
-    $daterange = new DatePeriod( new DateTime( '-7 days' ), new DateInterval('P1D'), new DateTime() );
+    $new_dates = array();
+
+    is_int( $days ) ? $end_date = $days : $end_date = 7 ;
+
+    $daterange = new DatePeriod( new DateTime( '-'.$end_date.' days' ), new DateInterval('P1D'), new DateTime() );
 
     if( $daterange instanceOf DatePeriod )
     {
       foreach( $daterange as $k => $date )
+      {
+        $new_dates[] = $date;
+      }
+
+      foreach( array_reverse( $new_dates ) as $k => $date )
       {
         $data['date']       = $date;
         $data['date_title'] = $date->format("M dS, Y");
@@ -53,7 +65,23 @@ class Dashboard
     $resp = new ajax_response( $data['action'], true );
 
     $resp->set_status( true );
-    $resp->set_data( array( 'loadable_content' => 'etrghvaoucyq3boigwsodrifuv suiboqiu5oqiuebroqviebrivueybrgirbf') );
+    $resp->set_data( array( 'loadable_content' => 'etrghvaoucyq3boigwsodrifuv suiboqiu5oqiuebroqviebrivueybrgirbf' ) );
+
+    echo $resp->encode_response();
+    die();
+  }
+
+  public function filter_dashboard_dates()
+  {
+    $data = $_POST;
+    $dash = new Dashboard();
+    $resp = new ajax_response( $data['action'], true );
+
+    if( $data['dashboard_date_count'] != '' )
+    {
+      $resp->set_status( true );
+      $resp->set_data( array( 'dashboard_dates' => $dash->get_dashboard_data( (int) $data['dashboard_date_count'] ) ) );
+    }
 
     echo $resp->encode_response();
     die();

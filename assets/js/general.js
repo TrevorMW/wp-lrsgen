@@ -384,6 +384,8 @@
     },
     load_content:function()
     {
+      $.fn.overlay.show_overlay();
+
       $.fn.wp_get.init( this.action )
       $.fn.wp_get.make_request( function( data, instance )
       {
@@ -393,6 +395,8 @@
       function( instance, resp )
       {
         resp.status ? instance.el.html( resp.data.loadable_content ) : '' ;
+
+        $.fn.overlay.hide_overlay();
 
       }, this )
     }
@@ -434,20 +438,20 @@
 
   $(document).ready(function()
   {
-    $.fn.loadable_data.init();
-    $(this).trigger( 'find_immediate_data' )
+    if( $('[data-overlay]')[0] != undefined )
+      $.fn.overlay.init( $('[data-overlay]'), $('[data-overlay]').parent() );
 
     if( $('[data-validate-cc-card ]')[0] != undefined )
       $.fn.cc.init( $('[data-validate-cc-card ]'), $('[data-cc-input]'), $('[data-card-type]') )
-
-    if( $('[data-overlay]')[0] != undefined )
-      $.fn.overlay.init( $('[data-overlay]'), $('[data-overlay]').parent() );
 
     if( $('[data-tabs]')[0] != undefined && $('[data-tab-triggers]')[0] != undefined )
       $.fn.tabs.init( $('[data-tabs]'), $('[data-tab-triggers]') );
 
     if( $('[data-map-directions]')[0] != undefined )
       $.fn.directions.init( $('[data-map-directions]') );
+
+      $.fn.loadable_data.init();
+    $(this).trigger( 'find_immediate_data' )
 
     if( $('[data-fireable-input]')[0] != undefined )
     {
@@ -592,9 +596,14 @@
         $.fn.form_msg.init( instance.form_msg );
         $.fn.form_msg.add_msg( resp.message, resp.status );
       },
-      open_accordion:function()
+      filter_dashboard_dates:function( resp, instance )
       {
+        var target = $('[data-updateable-content="' + instance.target + '"]'),
+            html;
 
+        resp.status ?  html = resp.data.dashboard_dates : html = resp.message;
+
+        target.html( html )
       }
     }
   }
