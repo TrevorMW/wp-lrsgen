@@ -34,14 +34,14 @@ body{
     background-color:white;
   }
 
-  &.dashboard-global-data,
-  &.login-page{
-    background-color:#fff;
+  .main-content-area > &{
+    padding:25px;
   }
 
-  &.login-page{
-    height:100vh;
-    color:#444;
+  &.dashboard-global-data,
+  &.dashboard-date-data,
+  &.single-hotel-directions{
+    padding:0;
   }
 
   &.page-forms{
@@ -52,12 +52,9 @@ body{
     padding:0 25px;
   }
 
-  &.add-hotel-form,
-  &.edit-hotel-form,
-  &.new-reservation,
-  &.reservation-sheet{
-    padding:25px;
-  }
+
+
+
 
   &.single-hotel-directions,
   &.dashboard-form{
@@ -73,12 +70,18 @@ body{
   &.dashboard-date-data{
     height:42.5vh;
     overflow-y:scroll;
+
   }
 
   &.dashboard-global-data,
   &.dashboard-date-data{
     font-size:26px;
     font-weight:600;
+    color:#444;
+  }
+
+  &.login-page{
+    height:100vh;
     color:#444;
   }
 
@@ -119,7 +122,8 @@ body{
   .login-page &,
   & .logo,
   .panel-header &,
-  [data-accordion] &{
+  [data-accordion] &,
+  .reservation-lists &{
     vertical-align: middle;
   }
 
@@ -129,7 +133,7 @@ body{
   }
 
   &.utility-bar{
-    width:125px;
+    width:112px;
     background-color:#333;
   }
 
@@ -203,6 +207,16 @@ body{
     &:first-child{
       border:0;
     }
+  }
+
+  &.reservation-tools{
+    width:125px;
+  }
+
+  &.reservation-id{
+    text-align: left;
+    padding-left:15px;
+    vertical-align: middle;
   }
 }
 
@@ -292,7 +306,8 @@ ul,ol{
 
   &.hotel-list,
   &.hotel-details,
-  .dashboard-date-data &{
+  .dashboard-date-data &,
+  .reservation-list &{
     list-style: none;
 
     &:after{
@@ -302,6 +317,10 @@ ul,ol{
 
   &.hotel-details{
     padding:0;
+  }
+
+  .reservation-tools &{
+    padding-left:4px;
   }
 }
 
@@ -321,6 +340,16 @@ li{
     &:first-child{
       border-top:0;
     }
+  }
+
+  .reservation-list > ul > &{
+    background-color:#fff;
+  }
+
+  .reservation-tools &{
+    display: inline-block;
+    width:auto;
+    margin-left:-4px;
   }
 }
 
@@ -376,6 +405,22 @@ a{
       display: inline-block;
     }
   }
+
+  .reservation-tools &{
+    display: block;
+    width:100%;
+    padding:15px;
+    line-height:normal;
+    text-align: center;
+    background-color:#ccc;
+    color:#444;
+    vertical-align: middle;
+
+    &:hover{
+      background-color:#444;
+      color:#fff;
+    }
+  }
 }
 
 span{
@@ -394,6 +439,17 @@ button{
       background-color:#efefef;
     }
   }
+
+  .reservation-tools &{
+    background-color:transparent;
+    border:0;
+    display: block;
+    width:100%;
+    padding:15px;
+    line-height:normal;
+    text-align: center;
+    min-height:54px;
+  }
 }
 
 i.fa{
@@ -401,6 +457,11 @@ i.fa{
 
   .mini-toolbar &{
     font-size:21px;
+  }
+
+  .reservation-tools a > &,
+  .reservation-tools button > &{
+    font-size:23px;
   }
 }
 

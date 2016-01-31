@@ -116,6 +116,8 @@ class Reservation extends WP_ACF_CPT
 
     if( is_array( $posts) && !empty( $posts ) )
     {
+      $html .= '<div class="wrapper reservation-list"><ul>';
+
       foreach( $posts as $k => $post )
       {
         $data['reservation'] = new Reservation( $k );
@@ -128,11 +130,22 @@ class Reservation extends WP_ACF_CPT
 
         ob_get_clean();
       }
+
+      $html .= '</ul></div>';
     }
 
     echo $html;
   }
 
+  public function get_reservation_address()
+  {
+    return $this->reservation_guest_address.', '.$this->reservation_guest_city.', '.$this->reservation_guest_country.' '.$this->reservation_guest_postal_code;
+  }
+
+  public function get_guest_full_name()
+  {
+    return $this->reservation_guest_first_name.' '.$this->reservation_guest_last_name;
+  }
 
   /////////////////////////////////////////
   ///////////// AJAX METHODS  /////////////

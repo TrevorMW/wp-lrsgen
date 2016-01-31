@@ -26,7 +26,7 @@
   <div class="table-cell utility-bar">
     <header>
       <div class="logo">
-        <a href="/">
+        <a href="/dashboard">
           <h3>LrsGEN</h3>
         </a>
       </div>

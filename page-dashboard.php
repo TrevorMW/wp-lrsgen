@@ -11,7 +11,7 @@ get_header();
 
 $dash = new Dashboard(); ?>
 
-  <div class="wrapper dashboard-global-data">
+  <div class="wrapper white dashboard-global-data">
     <div class="table">
       <div class="table-cell">
         <h2>Weekly</h2>
@@ -35,7 +35,6 @@ $dash = new Dashboard(); ?>
         <ul class="inline">
           <li>
             <select name="dashboard_date_count" data-fireable-input>
-              <option value=""># of days</option>
               <option value="7" selected>Week</option>
               <option value="31">Month</option>
               <option value="93">3 Months</option>

@@ -551,6 +551,10 @@
       }
     })
 
+    $('#menu-item-27 a').html( '<i class="fa fa-fw fa-dashboard"></i> <br />Dashboard')
+    $('#menu-item-25 a').html( '<i class="fa fa-fw fa-list"></i> <br />Rates')
+    $('#menu-item-26 a').html( '<i class="fa fa-fw fa-home"></i> <br />Hotels')
+    $('#menu-item-24 a').html( '<i class="fa fa-fw fa-file"></i> <br />Reservations')
   })
 
 

@@ -2,23 +2,23 @@
 
 if( is_object( $reservation ) )
 {
-  $html .= '<li class="reservation-list-item">
-              <div class="reservation-tools">
+  $html .= '<li class="table fixed floating">
+              <div class="table-cell reservation-tools">
                 <ul>
-                  <li><a href="/edit-reservation?reservation_id='.$reservation->reservation_id.'"><i class="fa fa-edit"></i></a></li>
                   <li>
                     <form data-ajax-form data-action="delete_reservation">
                       <input type="hidden" name="reservation_id" value="'.$reservation->reservation_id.'" />
-                      '.wp_nonce_field( 'delete_reservation', 'delete_reservation', false ).'
-                      <button type="submit"><i class="fa fa-trash"></i></button>
+                      <button type="submit" class="btn btn-primary"><i class="fa fa-fw fa-trash"></i></button>
                     </form>
                   </li>
+                  <li><a href="/edit-reservation?reservation_id='.$reservation->reservation_id.'" ><i class="fa fa-fw fa-edit"></i></a></li>
                 </ul>
               </div>
-              <div class=""></div>
-              <div class=""></div>
-              <div class=""></div>
-              <div class=""></div>
+              <div class="table-cell reservation-id">
+                <a href="/view-reservation?reservation_id='.$reservation->reservation_id.'">
+                  '.$reservation->get_guest_full_name().' - '.$reservation->get_reservation_address().'
+                </a>
+              </div>
             </li>';
 }
 

@@ -1,7 +1,5 @@
 <?php
 /**
- * Template Name:
- * Description: Generic Sub Page Template
  *
  * @package WordPress
  * @subpackage themename
