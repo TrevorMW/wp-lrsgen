@@ -19,6 +19,7 @@ require_once('lib/classes/class-hotel.php');
 require_once('lib/classes/class-reservation.php');
 require_once('lib/classes/class-dashboard.php');
 require_once('lib/classes/class-dashboard-date.php');
+require_once('lib/classes/class-rates.php');
 require_once('lib/classes/class-custom-login.php');
 
 

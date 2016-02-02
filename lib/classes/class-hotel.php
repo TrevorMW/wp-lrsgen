@@ -23,6 +23,7 @@ class Hotel extends WP_ACF_CPT
   public $hotel_parking;
   public $hotel_parking_fee;
   public $hotel_categories;
+  public $hotel_rate_data;
 
   public $hotel_all_room_types = array( 'king' => 'King', 'queen' => 'Queen', 'double-queen' => 'Double Queen', 'double-double' => 'Double Double' );
   public $hotel_tools = array(
@@ -146,7 +147,7 @@ class Hotel extends WP_ACF_CPT
 
       if( is_int( $result ) )
       {
-        $tax_result = wp_set_object_terms( $result, $data['hotel']['hotel_type'], 'hotel-category', false );
+        $tax_result = wp_set_object_terms( $result, $data['hotel_type'], 'hotel-category', false );
         $this->add_hotel_meta( $data, $result );
       }
     }
@@ -268,7 +269,7 @@ class Hotel extends WP_ACF_CPT
     {
       foreach( $term_list as $term )
       {
-        $terms[$term->term_id] = $term->name;
+        $terms[ $term->slug ] = $term->name;
       }
     }
 
@@ -344,6 +345,55 @@ class Hotel extends WP_ACF_CPT
     wp_reset_postdata();
 
     return $html;
+  }
+
+  public function save_rate_data( $data )
+  {
+    global $wpdb;
+
+    $result = true;
+    if( is_array( $data ) )
+    {
+      $hotel = new Hotel( (int) $data['hotel_id'] );
+
+      if( $hotel instanceOf Hotel )
+      {
+        if( $data['hotel_phone_number'] != '' )
+        {
+          $hotel_phone_number = $wpdb->escape( $data['hotel_phone_number'] );
+          //var_dump( $hotel_phone_number, $hotel->hotel_id );
+          update_field( 'field_561bc5fd21500', $hotel_phone_number, $hotel->hotel_id );
+        }
+
+        if( $data['hotel_email_address'] != '' )
+        {
+          $hotel_email_address = $wpdb->escape( $data['hotel_email_address'] );
+          update_field( 'field_561bc61721501', $hotel_email_address, $hotel->hotel_id );
+        }
+
+        if( $data['hotel_concierge'] != '' )
+        {
+          $hotel_concierge = $wpdb->escape( $data['hotel_concierge'] );
+          update_field( 'field_561bc62721502', $hotel_concierge, $hotel->hotel_id );
+        }
+
+        if( $data['hotel_rates'] != '' )
+        {
+          $hotel_rates = $wpdb->escape( $data['hotel_rates'] );
+          update_field( 'field_56afbe60016fc', $hotel_rates, $hotel->hotel_id );
+        }
+      }
+      else
+      {
+        $result = false;
+      }
+    }
+    else
+    {
+      $result = false;
+    }
+
+    return $result;
   }
 
 
@@ -480,7 +530,7 @@ class Hotel extends WP_ACF_CPT
                      'posts_per_page' => '-1',
                      'orderby'        => 'post_title',
                      'order'          => $data['hotel_sort'],
-                     'tax_query'      => array( array( 'taxonomy' => 'hotel-category' , 'field' => 'term_id', 'terms' => (int) $data['hotel_type'] ) ) );
+                     'tax_query'      => array( array( 'taxonomy' => 'hotel-category' , 'field' => 'slug', 'terms' => $data['hotel_type'] ) ) );
     }
     else
     {

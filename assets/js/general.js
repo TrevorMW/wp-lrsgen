@@ -18,6 +18,12 @@
 
         $.fn.form_btn.init( this.el.find('button[type="submit"]') )
       }
+
+      this.el.on( 'submit', this, function( e )
+      {
+        e.preventDefault();
+        e.data.make_request( e.data );
+      })
     },
     make_request: function( instance )
     {
@@ -389,7 +395,7 @@
       $.fn.wp_get.init( this.action )
       $.fn.wp_get.make_request( function( data, instance )
       {
-        data.variable_data = instance.extra
+        data.variable_data = instance.extra_data
         return data
       },
       function( instance, resp )
@@ -417,21 +423,34 @@
     },
     find_immediate_data:function()
     {
-      $(document).find('[data-loadable-content]').each(function()
+      $('[data-load-when="now"]').each( function()
       {
-        if( $(this).data('load-when') == 'now')
-        {
-          $.fn.loadable_content.init( $(this), $(this).data('load-extra') )
-          $.fn.loadable_content.load_content( $.fn.loadable_content );
-        }
+        $.fn.loadable_content.init( $(this), $(this).data('load-extra') )
+        $.fn.loadable_content.load_content( $.fn.loadable_content );
       })
     },
     find_deferred_data:function( data )
     {
-      data.target.find('[data-loadable-content]').each(function()
+      data.target.find('[data-load-when="deferred"]').each(function()
       {
         $.fn.loadable_content.init( $(this), $(this).data('load-extra') )
         $.fn.loadable_content.load_content( $.fn.loadable_content );
+      })
+    }
+  }
+
+  $.fn.editable_content ={
+    init:function()
+    {
+      $(document).on( 'focusout', 'td[contenteditable]', this, function( e )
+      {
+        var val    = $(this).html();
+            target = $(this).data('target');
+
+        $('input[name="' + target + '"]').val( val );
+
+        $.fn.wp_ajax.init( $(this).closest('tr').find('form') );
+        $.fn.wp_ajax.make_request( $.fn.wp_ajax )
       })
     }
   }
@@ -450,8 +469,10 @@
     if( $('[data-map-directions]')[0] != undefined )
       $.fn.directions.init( $('[data-map-directions]') );
 
-      $.fn.loadable_data.init();
+    $.fn.loadable_data.init();
     $(this).trigger( 'find_immediate_data' )
+
+    $.fn.editable_content.init();
 
     if( $('[data-fireable-input]')[0] != undefined )
     {
@@ -551,6 +572,8 @@
       }
     })
 
+
+
     $('#menu-item-27 a').html( '<i class="fa fa-fw fa-dashboard"></i> <br />Dashboard')
     $('#menu-item-25 a').html( '<i class="fa fa-fw fa-list"></i> <br />Rates')
     $('#menu-item-26 a').html( '<i class="fa fa-fw fa-home"></i> <br />Hotels')
@@ -608,6 +631,25 @@
         resp.status ?  html = resp.data.dashboard_dates : html = resp.message;
 
         target.html( html )
+      },
+      load_rates_async:function( resp, instance )
+      {
+        var target = $('[data-updateable-content="' + instance.target + '"]'),
+            html;
+
+        resp.status ?  html = resp.data.dashboard_dates : html = resp.message;
+
+        target.html( html )
+      },
+      update_rates:function( resp, instance )
+      {
+        resp.status ? klass = 'success' : 'error' ;
+        instance.el.parent().parent().addClass( klass )
+
+        setTimeout( function( el )
+        {
+          el.removeClass()
+        }, 600, instance.el.parent().parent() )
       }
     }
   }

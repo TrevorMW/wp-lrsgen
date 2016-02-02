@@ -64,8 +64,24 @@ class Dashboard
     $data = $_POST;
     $resp = new ajax_response( $data['action'], true );
 
-    $resp->set_status( true );
-    $resp->set_data( array( 'loadable_content' => 'etrghvaoucyq3boigwsodrifuv suiboqiu5oqiuebroqviebrivueybrgirbf' ) );
+    if( $data['variable_data'] != null )
+    {
+      $resp->set_status( true );
+      $resp->set_data( array( 'loadable_content' => 'etrghvaoucyq3boigwsodrifuv suiboqiu5oqiuebroqviebrivueybrgirbf' ) );
+
+      if( is_time( $data['variable_data'] ) )
+      {
+
+      }
+      else
+      {
+
+      }
+    }
+    else
+    {
+      $resp->set_message('Could not load data. Try Again.');
+    }
 
     echo $resp->encode_response();
     die();

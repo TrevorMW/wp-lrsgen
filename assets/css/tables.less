@@ -17,6 +17,28 @@ table{
     background-color:#dcdcdc;
   }
 
+  & tr{
+    background-color:transparent;
+    .transition(background-color .3s);
+
+    &.error{
+      background-color:pink;
+
+      & td{
+        border-color:pink;
+      }
+    }
+
+    &.success{
+      background-color:#a6e8be;
+
+      & td{
+        border-color:#a6e8be;
+      }
+    }
+
+  }
+
   & td{
 
     &:focus{
@@ -28,22 +50,20 @@ table{
 
   }
 
-  &.hotel-rate-table{
+  .hotel-rates &{
     border:1px solid #dcdcdc;
-    margin:0 15px;
-    width:98%;
     margin: 0 0 0 auto;
 
     & td,
     & th{
       border-left:1px solid #dcdcdc;
+      border-bottom:1px solid #dcdcdc;
 
       &:first-child,
       &[data-hotel-row-action]{
         border-left:0;
       }
     }
-
 
     & th.hotel-phone,
     & th.hotel-email,
