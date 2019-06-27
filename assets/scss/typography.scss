@@ -1,4 +1,4 @@
-@import:'variables';
+@import 'variables';
 
 a,
 p,
@@ -7,12 +7,11 @@ strong,
 em,
 b,
 sup,
-mark{
+mark {
   line-height:inherit;
   font-weight:inherit;
   font-size:inherit;
   color:inherit;
-
 }
 
 li{

@@ -2,7 +2,7 @@
 @import 'utilities';
 
 *{
-  font-family:@baseFont;
+  font-family:$baseFont;
   font-weight:600;
   font-size:16px;
   letter-spacing:1px;
@@ -58,7 +58,7 @@ body{
   }
 
   &.dashboard-form{
-    background-color:@paleRed;
+    background-color:$paleRed;
     border:0;
   }
 
@@ -134,7 +134,7 @@ body{
 
   & .logo{
     padding:25px 0;
-    background-color:@crimson;
+    background-color:$crimson;
     text-align: center;
   }
 
@@ -178,7 +178,6 @@ body{
       width:0;
       overflow:hidden;
       text-align: center;
-      .transition( width .3s);
     }
 
     &.active div{
@@ -264,7 +263,7 @@ header{
 
   &.hotel-header{
     padding:10px;
-    background-color:@paleRed;
+    background-color:$paleRed;
     color:#fff;
   }
 
@@ -304,10 +303,6 @@ ul,ol{
   .dashboard-date-data &,
   .reservation-list &{
     list-style: none;
-
-    &:after{
-      .clearfix();
-    }
   }
 
   &.hotel-details{
@@ -349,7 +344,6 @@ li{
 }
 
 a{
-  .transition(all .3s);
   cursor:pointer;
 
   .page-tools &{
@@ -379,7 +373,7 @@ a{
     padding:20px;
     border-left:1px solid #ddd;
     font-size:20px;
-    color:@crimson;
+    color:$crimson;
 
     &:hover{
       background-color:#f4f4f4;
@@ -471,7 +465,7 @@ i.fa{
 }
 
 .login-logo{
-  color:@crimson;
+  color:$crimson;
   font-size:60px;
   font-weight:800;
   line-height:60px;
@@ -511,7 +505,7 @@ i.fa{
   border:1px solid #ccc;
   height:350px;
 
-  .hotel-map&{
+  .hotel-map &{
     border-top:0;
   }
 }
@@ -577,7 +571,6 @@ i.fa{
   opacity:0;
   overflow:hidden;
   background-color:#fff;
-  .transition( opacity height .3s);
 
   &.active{
     height:39vh;
@@ -605,7 +598,6 @@ i.fa{
 .panel{
   margin-bottom:35px;
   border:1px solid #ccc;
-  .transition(all .3s);
 
   & .panel-header,
   & .panel-content,
@@ -616,7 +608,7 @@ i.fa{
 
   & .panel-header{
     background:#fff url('../media/stripe.png') repeat left top;
-    color:@black;
+    color:$black;
     border-bottom:1px solid #ccc;
 
     &.table{
@@ -626,10 +618,6 @@ i.fa{
 
   & .panel-content{
     background-color:#f1f1f1;
-
-    &:after{
-      .clearfix();
-    }
   }
 
   & .panel-header legend{

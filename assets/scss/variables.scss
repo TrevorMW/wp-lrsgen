@@ -1,0 +1,59 @@
+$baseFont: 	  'Raleway', sans-serif;
+$specialFont: 'Lato', 	 sans-serif;
+
+$black: #333;
+$darkgray:#454545;
+$crimson:#ba1010;
+$gray: #968b84;
+$paleRed:#d66464;
+/*
+
+@function gradient ( $startColor: #eee, $endColor: white ){
+	background-color: $startColor;
+	background: -webkit-gradient(linear, left top, left bottom, from($startColor), to($endColor));
+	background: -webkit-linear-gradient(top, $startColor, $endColor);
+	background: -moz-linear-gradient(top, $startColor, $endColor);
+	background: -ms-linear-gradient(top, $startColor, $endColor);
+	background: -o-linear-gradient(top, $startColor, $endColor);
+}
+
+@function transition ( $transition ){
+	-webkit-transition: $transition;
+	-moz-transition:    $transition;
+	-ms-transition:     $transition;
+	-o-transition:      $transition;
+}
+
+@function scale ( $factor ){
+	-webkit-transform: scale($factor);
+	-moz-transform:    scale($factor);
+	-ms-transform: 	   scale($factor);
+	-o-transform: 	   scale($factor);
+}
+
+@function clearfix(){
+  display:table;
+  width:100%;
+  content:"";
+  clear:both;
+}
+*/
+
+/* Chrome, Safari, Opera */
+$above-1280: "only screen and (min-width:1280px)";
+
+$below-2000: "only screen and (max-width:2000px)";
+$below-1600: "only screen and (max-width:1600px)";
+$below-1400: "only screen and (max-width:1400px)";
+$below-1280: "only screen and (max-width:1280px)";
+$below-1180: "only screen and (max-width:1180px)";
+$below-1024: "only screen and (max-width:1024px)";
+$below-980: "only screen and (max-width:980px)";
+$below-900: "only screen and (max-width:900px)";
+$below-800: "only screen and (max-width:800px)";
+$below-768: "only screen and (max-width:768px)";
+$below-600: "only screen and (max-width:600px)";
+$below-480: "only screen and (max-width:480px)";
+$below-340: "only screen and (max-width:340px)";
+
+$retina: "(-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi)";

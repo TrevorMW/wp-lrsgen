@@ -17,14 +17,13 @@ textarea{
   padding:15px;
   display: block;
   width:100%;
-  .transition(all .3s);
 }
 
 
 input[type]:not([type="hidden"]):not([type="radio"]):not([type="checkbox"]):focus,
 select:focus,
 textarea:focus{
-  border-color:@paleRed;
+  border-color:$paleRed;
 }
 
 /*
@@ -84,10 +83,6 @@ form{
     margin:0;
     padding:0;
     list-style:none;
-  }
-
-  & ul:after{
-    .clearfix();
   }
 
   & ul.inline{
@@ -153,7 +148,7 @@ form{
 .radio-parent,
 .checkbox-parent{
   display: inline-block;
-  border:2px solid @crimson;
+  border:2px solid $crimson;
   background-color:#eee;
   height:28px;
   width:28px;
@@ -172,10 +167,9 @@ form{
 
 .new-radio    input + div .radio-child,
 .new-checkbox input + div .checkbox-child {
-  background-color:@crimson;
+  background-color:$crimson;
   width:0;
   height:0;
-  .transition( width height border-radius .3s);
 }
 .new-checkbox input:checked + div .checkbox-child,
 .new-radio    input:checked + div .radio-child{
@@ -205,7 +199,6 @@ form{
 [data-boolean-fee-input]{
   height:0;
   overflow:hidden;
-  .transition( height .3s);
 
   &.active{
     height:48px;

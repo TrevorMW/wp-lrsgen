@@ -5,7 +5,6 @@
   -moz-appearance: none;
   appearance: none;
   display: inline-block;
-  .transition( all .3s);
   border:0;
   background-color:#ccc;
   border-radius:0;
@@ -14,12 +13,12 @@
   border-bottom:2px solid;
 
   &.btn-primary{
-    background-color:@crimson;
+    background-color:crimson;
     color:#fff;
-    border-bottom-color:darken( @crimson, 10% );
+    border-bottom-color:darken( $crimson, 10% );
 
     &:hover{
-      background-color:darken( @crimson, 10% )
+      background-color:darken( $crimson, 10% )
     }
   }
 

@@ -14,7 +14,6 @@ nav{
     color:#fff;
     text-align: center;
 
-
     &:first-child{
       border-top:0;
     }
@@ -69,13 +68,12 @@ nav{
       width:100%;
       padding: 15px 0;
       font-size:18px;
-      color:@black;
+      color:$black;
       background-color:#eee;
-      .transition( all .3s );
 
       &:hover,
       &.active{
-        color:@crimson;
+        color:$crimson;
         background-color:#fff;
       }
     }

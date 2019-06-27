@@ -1,4 +1,22 @@
 @import 'variables';
+@import 'bourbon';
+
+ody{
+  border-top:1px solid #ddd;
+  position:relative;
+}
+
+.wrapper{
+
+}
+
+.container{
+  max-width:1200px;
+  margin: 0 auto;
+}
+
+
+
 @import 'scaffolding';
 @import 'typography';
 @import 'tables';
@@ -6,6 +24,4 @@
 @import 'navigation';
 @import 'images';
 @import 'buttons';
-@import 'variables';
-@import 'variables';
 @import 'variables';
